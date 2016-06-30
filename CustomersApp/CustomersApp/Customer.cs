@@ -23,19 +23,32 @@ namespace CustomersApp
 
         public int CompareTo(Customer other) // case insensitive way implement
         {
-            //if (other != null) // How do I deal with null object
-            //{
-                return string.Compare(Name, other.Name, true);
-           // }
+            return string.Compare(Name, other.Name, true);
         }
 
         public bool Equals(Customer other)
         {
             bool result;
-
+            
             if (Name.Equals(other.Name) && ID.Equals(other.ID))
             {
                 result = true;
+            }
+            else
+            {
+                result = false;
+            }
+           
+            return result;
+        }
+
+        public override bool Equals(object obj)
+        {
+            bool result;
+
+            if ((obj != null) && (obj is Customer))
+            {
+                result = Equals(obj as Customer);
             }
             else
             {
@@ -45,10 +58,16 @@ namespace CustomersApp
             return result;
         }
 
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
         public override string ToString()
         {
             return string.Format("[ ID:{0} ,Name:{1} ,Address:{2} ] {3}", ID, Name, Address,Environment.NewLine);
         }
-        
+
+       
     }
 }

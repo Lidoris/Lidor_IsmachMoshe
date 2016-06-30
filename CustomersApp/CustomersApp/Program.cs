@@ -10,7 +10,7 @@ namespace CustomersApp
     {
         static void Main(string[] args)
         {
-            List<Customer> listOfCustomer = new List<Customer>(); //mksk
+            List<Customer> listOfCustomer = new List<Customer>(); 
             List<Customer> listAfterFilter;
             CustomerFilter customerFilterA_K = new CustomerFilter(FilterByLettersA_K);
             CustomerFilter customerFilterL_Z = new CustomerFilter(delegate(Customer customer)
@@ -81,6 +81,5 @@ namespace CustomersApp
 
             return false;
         }
-
     }
 }
