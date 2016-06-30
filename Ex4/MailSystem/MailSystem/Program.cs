@@ -11,7 +11,7 @@ namespace MailSystem
     {
         static void Main(string[] args)
         {
-            MailManager mailManager = new MailManager();
+            MailManager mailManager = new MailManager();   
 
             mailManager.MailArrived += MailManager_MailArrived;
             mailManager.SimulateMailArrived(); //Create a System.Threading.Timer, and in the timer callback call SimulateMailArrived every 1 second
