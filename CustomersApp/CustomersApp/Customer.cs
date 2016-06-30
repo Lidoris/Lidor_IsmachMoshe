@@ -23,7 +23,14 @@ namespace CustomersApp
 
         public int CompareTo(Customer other) // case insensitive way implement
         {
-            return string.Compare(Name, other.Name, true);
+            if (other == null)
+            {
+                return 1;
+            }
+            else
+            {
+                return string.Compare(Name, other.Name, true);
+            }
         }
 
         public bool Equals(Customer other)
