@@ -11,11 +11,12 @@ namespace MailSystem
     {
         static void Main(string[] args)
         {
-            MailManager mailManager = new MailManager();   
+            MailManager mailManager = new MailManager();
+            TimerCallback tcb = new TimerCallback(mailManager.SimulateMailArrived);
 
             mailManager.MailArrived += MailManager_MailArrived;
-            mailManager.SimulateMailArrived(); //Create a System.Threading.Timer, and in the timer callback call SimulateMailArrived every 1 second
-            
+            Timer timer = new Timer( tcb , null , 0, 1000);
+            Console.ReadLine();
         }
 
         public static void MailManager_MailArrived(object sender, MailArrivedEventArgs e)

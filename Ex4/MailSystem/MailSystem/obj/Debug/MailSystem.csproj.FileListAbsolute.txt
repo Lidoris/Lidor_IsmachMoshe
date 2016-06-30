@@ -7,3 +7,6 @@ C:\Users\Lidor\Source\Repos\Lidor_IsmachMoshe\MailSystem\MailSystem\obj\Debug\Ma
 C:\Users\Lidor\Source\Repos\Lidor_IsmachMoshe\Ex4\MailSystem\MailSystem\bin\Debug\MailSystem.exe.config
 C:\Users\Lidor\Source\Repos\Lidor_IsmachMoshe\Ex4\MailSystem\MailSystem\obj\Debug\MailSystem.exe
 C:\Users\Lidor\Source\Repos\Lidor_IsmachMoshe\Ex4\MailSystem\MailSystem\obj\Debug\MailSystem.pdb
+C:\Users\Lidor\Source\Repos\Lidor_IsmachMoshe\Ex4\MailSystem\MailSystem\bin\Debug\MailSystem.exe
+C:\Users\Lidor\Source\Repos\Lidor_IsmachMoshe\Ex4\MailSystem\MailSystem\bin\Debug\MailSystem.pdb
+C:\Users\Lidor\Source\Repos\Lidor_IsmachMoshe\Ex4\MailSystem\MailSystem\obj\Debug\MailSystem.csprojResolveAssemblyReference.cache
