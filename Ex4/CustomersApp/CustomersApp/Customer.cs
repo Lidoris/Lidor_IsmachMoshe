@@ -74,7 +74,5 @@ namespace CustomersApp
         {
             return string.Format("[ ID:{0} ,Name:{1} ,Address:{2} ] {3}", ID, Name, Address,Environment.NewLine);
         }
-
-       
     }
 }

@@ -44,7 +44,6 @@ namespace CustomersApp
             }
             
             return result;
-            
         }
     }
 }
