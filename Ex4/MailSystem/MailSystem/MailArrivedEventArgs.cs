@@ -16,7 +16,5 @@ namespace MailSystem
             Title = title;
             Body = body;
         }
-        
-
     }
 }
