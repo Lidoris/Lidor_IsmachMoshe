@@ -18,11 +18,7 @@ namespace MailSystem
 
         protected virtual void OnMailArrived(MailArrivedEventArgs args)
         {
-            if (MailArrived!= null)
-            {
-                MailArrived(this, args);
-            }
-
+            MailArrived?.Invoke(this, args);
         }
     }
 }
