@@ -10,3 +10,6 @@ C:\Users\Lidor\Source\Repos\Lidor_IsmachMoshe\Ex05\Personnel\Personnel\obj\Debug
 C:\Users\Lidor\Source\Repos\Lidor_IsmachMoshe\Ex_05\Personnel\Personnel\bin\Debug\Personnel.exe.config
 C:\Users\Lidor\Source\Repos\Lidor_IsmachMoshe\Ex_05\Personnel\Personnel\obj\Debug\Personnel.exe
 C:\Users\Lidor\Source\Repos\Lidor_IsmachMoshe\Ex_05\Personnel\Personnel\obj\Debug\Personnel.pdb
+C:\Users\Lidor\Source\Repos\Lidor_IsmachMoshe\Ex_05\Personnel\Personnel\bin\Debug\Personnel.exe
+C:\Users\Lidor\Source\Repos\Lidor_IsmachMoshe\Ex_05\Personnel\Personnel\bin\Debug\Personnel.pdb
+C:\Users\Lidor\Source\Repos\Lidor_IsmachMoshe\Ex_05\Personnel\Personnel\obj\Debug\Personnel.csprojResolveAssemblyReference.cache
