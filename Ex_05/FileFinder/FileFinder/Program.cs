@@ -11,31 +11,31 @@ namespace FileFinder
     {
         static void Main(string[] args)
         {
-            string[] Files = Directory.GetFiles(args[0]);
-            string Substring = args[1];
-            List<string> filesWithSubstring;
-            
-            filesWithSubstring = FindFilesBySubstring(Files, Substring);
-
-            foreach (string path in filesWithSubstring)
+            try
             {
-                Console.WriteLine(path);
-            }
-        }
+                
+                string Substring = args[1];
+                List<string> filesWithSubstring;
+                FileFinder fileFinder = new FileFinder(args[0], args[1]);
 
-        static List<string> FindFilesBySubstring(string[] dirs, string Substring)
-        {
-            List<string> filesWithSubstring = new List<string>();
+                filesWithSubstring = fileFinder.FindFiles();
 
-            foreach (string path in dirs)
-            {
-                if (path.Contains(Substring))
+                foreach (string path in filesWithSubstring)
                 {
-                    filesWithSubstring.Add(path);
+                    Console.WriteLine("{0} , file length: {1}.", path, (new FileInfo(path)).Length);
                 }
-            }
 
-            return filesWithSubstring;
+            }
+            catch (UnauthorizedAccessException)
+            {
+                Console.WriteLine("The caller does not have the required permission.");
+            }
+            catch (IOException)
+            {
+                Console.WriteLine("path is a file name.");
+            }
         }
+
+        
     }
 }
