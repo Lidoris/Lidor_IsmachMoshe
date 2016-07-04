@@ -15,7 +15,7 @@ namespace Personnel
 
             try
             {
-                listOfData = ReadData("myData.txt");
+                listOfData = ReadData("mydata.txt");
                 foreach (string line in listOfData)
                 {
                     Console.WriteLine(line);
