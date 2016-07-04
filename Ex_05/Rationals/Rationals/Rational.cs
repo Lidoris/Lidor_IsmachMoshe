@@ -37,7 +37,6 @@ namespace Rationals
             {
                 throw new ArgumentException("The denominator can not be zero");
             }
-            
         }
 
         public Rational(int numerator)
@@ -59,7 +58,6 @@ namespace Rationals
                 result = new Rational((numA.Numerator * numB.Denominator) + (numB.Numerator * numA.Denominator), numA.Denominator * numB.Denominator);
             }
            
-
             return result;
         }
 
@@ -81,7 +79,6 @@ namespace Rationals
             }
 
             return result;
-
         }
 
         public static Rational operator*(Rational numA, Rational numB)

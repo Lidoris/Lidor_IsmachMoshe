@@ -13,7 +13,7 @@ namespace Rationals
         {
             try
             {
-                Rational rationalA = new Rational(4, 0);
+                Rational rationalA = new Rational(4, 8);
                 Rational rationalB = new Rational(1, 3);
 
                 Console.WriteLine(" rationalA Value : {0}", rationalA);
