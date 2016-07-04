@@ -15,7 +15,7 @@ namespace Personnel
 
             try
             {
-                listOfData = ReadData("myData.txt"); // בעיה במיקום הקובץ
+                listOfData = ReadData("myData.txt");
                 foreach (string line in listOfData)
                 {
                     Console.WriteLine(line);
