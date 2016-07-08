@@ -18,17 +18,16 @@ namespace AttribDemo
                 if (type != null)
                 {
                     var attr = type.GetCustomAttribute(typeof(CodeReviewAttribute));
-                    if (attr is CodeReviewAttribute )
+                    if (attr is CodeReviewAttribute && attr != null)
                     {
                         if ((attr as CodeReviewAttribute).IsApproved == false)
                         {
                             flag = false;
                         }
-                    }
 
-                    Console.WriteLine(attr.ToString()); 
+                        Console.WriteLine(attr.ToString()); 
+                    }
                 }
-                
             }
 
             return flag;

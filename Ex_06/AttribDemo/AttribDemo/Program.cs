@@ -12,7 +12,7 @@ namespace AttribDemo
         static void Main(string[] args)
         {
             AssemblyAnalayze assemblyAnalayze = new AssemblyAnalayze();
-            assemblyAnalayze.AnalayzeAssembly(Assembly.GetExecutingAssembly());
+            Console.WriteLine("All Attributes are Approved: {0}", assemblyAnalayze.AnalayzeAssembly(Assembly.GetExecutingAssembly())); 
         }
     }
 }
