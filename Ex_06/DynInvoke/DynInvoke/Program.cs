@@ -25,7 +25,6 @@ namespace DynInvoke
             {
                 Console.WriteLine("No method can be found that matches the arguments in args");
             }
-            
         }
 
         public static string InvokeHello (string str, Object obj)
