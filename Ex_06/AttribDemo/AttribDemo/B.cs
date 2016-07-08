@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace AttribDemo
 {
+    [CodeReview("Hadar", "2/2/2016", false)]
     class B
     {
     }
