@@ -4,12 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProjectBackgammon
+namespace BackgammonUI
 {
     class Program
     {
         static void Main(string[] args)
         {
+            GameManagmentUI gameManagmentUI = new GameManagmentUI();
+            gameManagmentUI.StartGame();
+
         }
     }
 }

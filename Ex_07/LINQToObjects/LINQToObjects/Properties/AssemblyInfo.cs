@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("BackgammonUI")]
+[assembly: AssemblyTitle("LINQToObjects")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("BackgammonUI")]
+[assembly: AssemblyProduct("LINQToObjects")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("7c3701b9-cde3-42bf-898a-4b1690c0641c")]
+[assembly: Guid("9741b312-b94d-43f8-a8bd-1de39105697d")]
 
 // Version information for an assembly consists of the following four values:
 //
