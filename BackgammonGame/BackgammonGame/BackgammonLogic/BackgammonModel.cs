@@ -21,6 +21,7 @@ namespace BackgammonLogic
             CurrentPlayer = ePlayer.playerA;
             PlayerA = new HumanPlayer();
             PlayerB = new HumanPlayer();
+            IsGameOver = false;
 
         }
 

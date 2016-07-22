@@ -13,10 +13,12 @@ namespace BackgammonLogic
         public GameBoard()
         {
             Points = new Stack<Pawn>[24];
+
             for (int i = 0; i < Points.Length ; i++)
             {
                 Points[i] = new Stack<Pawn>();
             }
+
             initializationBoard();
         }
 
@@ -42,5 +44,7 @@ namespace BackgammonLogic
                 Points[7].Push(new Pawn(ePlayer.playerB));
             }
         }
+
+       
     }
 }

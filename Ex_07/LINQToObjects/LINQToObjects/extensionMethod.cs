@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LINQToObjects
 {
-    static class ExtensionMethod // static is OK?
+    static class ExtensionMethod
     {
         public static void CopyTo(this object sourceObj, object destObj)
         {
@@ -35,19 +35,6 @@ namespace LINQToObjects
                 {
                     prop.TargetProp.SetValue(destObj, prop.SourceProp.GetValue(sourceObj, null), null);
                 }
-
-
-                //foreach (var dest in destProp)
-                //{
-                //    foreach (var src in sourceProp)
-                //    {
-                //        if (dest.PropertyType.Equals(src.PropertyType) && dest.Name == src.Name)
-                //        {
-                //            var type = src.PropertyType;
-                //            dest.SetValue(destObj, src.GetValue(sourceObj));
-                //        }
-                //    }
-                //}
             }
         }
 

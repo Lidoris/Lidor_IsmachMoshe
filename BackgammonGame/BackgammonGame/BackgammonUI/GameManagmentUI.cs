@@ -21,32 +21,32 @@ namespace BackgammonUI
         public void StartGame()
         {
 
-            while (Model.IsGameOver)
+           // while (!Model.IsGameOver)
             {
-                InitBoardUI();
-                PrintGameBoard();
+                UpdateBoardUI();
+                PrintUpdatedGameBoard();
                 
-                Model.MakeAMove();
+                //Model.MakeAMove();
 
             }
         }
 
-        public Move GetAMove()
-        {
+        //public Move GetAMove()
+        //{
 
-        }
+        //}
 
 
 
-        public void InitBoardUI()
+        public void UpdateBoardUI()
         {
             for (int i = 0; i < Model.Board.Points.Length; i++)
             {
-                InitPointInBoard(Model.Board.Points[i], i);
+                UpdatePointInBoard(Model.Board.Points[i], i);
             }
         }
 
-        public void InitPointInBoard(Stack<Pawn> stack, int index)
+        public void UpdatePointInBoard(Stack<Pawn> stack, int index)
         {
             int x, y;
             index++;
@@ -54,23 +54,26 @@ namespace BackgammonUI
             {
                 if (index <= 12)
                 {
-                    x = 6;
+                    x = 11;
                     y = 12 - index;
+                    for (int i = 0; i < stack.Count && i < 6; i++)
+                    {
+                        BoardUI[x--, y] = stack.Peek();
+                    }
                 }
                 else
                 {
                     x = 0;
                     y = index - 13;
-                }
-
-                for (int i = 0; i < stack.Count && i < 6; i++)
-                {
-                    BoardUI[x++, y] = stack.Peek();
+                    for (int i = 0; i < stack.Count && i < 6; i++)
+                    {
+                        BoardUI[x++, y] = stack.Peek();
+                    }
                 }
             }
         }
 
-        public void PrintGameBoard()
+        public void PrintUpdatedGameBoard()
         {
             char divider = '-';
             StringBuilder dividerBuilder = new StringBuilder("--");

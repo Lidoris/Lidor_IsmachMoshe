@@ -10,8 +10,8 @@ namespace BackgammonLogic
     {
         public void MakeAMove()
         {
-            GetAMove();
-            CheckIsValidMove();
+            //GetAMove();
+            //CheckIsValidMove();
         }
     }
 }

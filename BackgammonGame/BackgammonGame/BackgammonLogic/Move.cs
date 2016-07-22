@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BackgammonLogic
 {
-    class Move
+    public class Move
     {
         public Stack<Pawn> Source { get; private set; }
         public Stack<Pawn> Destination { get; private set; }
