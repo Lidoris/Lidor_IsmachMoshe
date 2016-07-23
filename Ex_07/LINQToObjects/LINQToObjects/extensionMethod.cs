@@ -11,7 +11,6 @@ namespace LINQToObjects
     {
         public static void CopyTo(this object sourceObj, object destObj)
         {
-
             if (sourceObj != null)
             {
                 var sourceProp = from prop in sourceObj.GetType().GetProperties()
@@ -21,7 +20,6 @@ namespace LINQToObjects
                 var destProp = from prop in destObj.GetType().GetProperties()
                                where prop.CanWrite
                                select prop;
-
                 
                 var Result = sourceProp.Join(destProp, source => new { source.PropertyType, source.Name }, target => new { target.PropertyType, target.Name },
                         (source, target) => new
@@ -29,8 +27,7 @@ namespace LINQToObjects
                             SourceProp = source,
                             TargetProp = target
                         });
-
-
+               
                 foreach (var prop in Result)
                 {
                     prop.TargetProp.SetValue(destObj, prop.SourceProp.GetValue(sourceObj, null), null);

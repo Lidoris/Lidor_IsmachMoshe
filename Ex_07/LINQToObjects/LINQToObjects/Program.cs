@@ -31,7 +31,7 @@ namespace LINQToObjects
 
             //1.b
             var query2 = from p in Process.GetProcesses()
-                         where p.Threads.Count < 5 && p.IsSystem()
+                         where p.Threads.Count < 5 && p.IsSystem() // IsSystem it is an Extension Method that was created to check if process.StartTime will throw an exception
                          orderby p.Id
                          select new
                          {
@@ -47,7 +47,7 @@ namespace LINQToObjects
 
             //1.c
             var query3 = from p in Process.GetProcesses()
-                         where p.Threads.Count < 5 && p.IsSystem()          // IsSystem it is an Extension Method that was created to check if process.StartTime will throw an exception
+                         where p.Threads.Count < 5 && p.IsSystem() 
                          group new
                          {
                              Name = p.ProcessName,

@@ -31,10 +31,7 @@ namespace DynInvoke
         {
             if(obj != null)
             {
-                BindingFlags flags = BindingFlags.Static | BindingFlags.Instance
-                | BindingFlags.Public | BindingFlags.NonPublic
-                | BindingFlags.FlattenHierarchy;
-                MemberInfo[] members = (obj.GetType()).GetMembers(flags);
+              
                 Type type = obj.GetType();
                 return (string)type.InvokeMember("Hello", BindingFlags.InvokeMethod, null, obj, new string[] { str });
             }
