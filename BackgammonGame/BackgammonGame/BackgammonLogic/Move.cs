@@ -8,13 +8,13 @@ namespace BackgammonLogic
 {
     public class Move
     {
-        public Stack<Pawn> Source { get; private set; }
-        public Stack<Pawn> Destination { get; private set; }
+        public int Source { get; private set; }
+        public Dice Dice { get; private set; }
 
-        public Move(Stack<Pawn> source, Stack<Pawn> dest)
+        public Move(int source, Dice dice)
         {
             Source = source;
-            Destination = dest;
+            Dice = dice;
         }
     }
 }

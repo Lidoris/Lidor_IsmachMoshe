@@ -6,21 +6,27 @@ using System.Threading.Tasks;
 
 namespace BackgammonLogic
 {
-    class Dice
+    public class Dice
     {
+        //private Random random;
         public int Value { get; private set; }
-        private Random random;
+        public bool IsUsed { get;  set; }
 
         public Dice()
         {
-            random = new Random();
+            IsUsed = false;
         }
 
-        public void RollDice()
+        public void RollDice(Random random)
         {
+            IsUsed = false;
             Value = random.Next(1, 6);
         }
 
+        public void UseDice()
+        {
+            IsUsed = true;
+        }
 
     }
 }

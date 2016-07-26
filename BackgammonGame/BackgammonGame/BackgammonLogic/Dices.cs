@@ -6,21 +6,33 @@ using System.Threading.Tasks;
 
 namespace BackgammonLogic
 {
-    class Dices
+    public class Dices
     {
-        public Dice FirstDice { get; private set; }
+        public Dice FirstDice { get;  set; }
         public Dice SecondDice { get; private set; }
+        public bool IsDouble { get; set; }
+
+        private Random random = new Random();
 
         public Dices()
         {
             FirstDice = new Dice();
             SecondDice = new Dice();
+            IsDouble = false;
         }
 
-        private void RollDices()
+        public void RollDices()
         {
-            FirstDice.RollDice();
-            SecondDice.RollDice();
+            FirstDice.RollDice(random);
+            SecondDice.RollDice(random);
+            if (FirstDice.Value == SecondDice.Value)
+            {
+                IsDouble = true;
+            }
+            else
+            {
+                IsDouble = false;
+            }
         }
     }
 }
