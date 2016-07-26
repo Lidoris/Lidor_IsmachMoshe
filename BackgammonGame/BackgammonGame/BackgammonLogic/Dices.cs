@@ -22,7 +22,7 @@ namespace BackgammonLogic
         }
 
         public void RollDices()
-        {
+        { 
             FirstDice.RollDice(random);
             SecondDice.RollDice(random);
             if (FirstDice.Value == SecondDice.Value)

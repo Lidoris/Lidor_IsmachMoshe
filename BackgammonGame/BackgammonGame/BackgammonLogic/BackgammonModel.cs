@@ -109,12 +109,12 @@ namespace BackgammonLogic
         }
 
         public bool CheckIsValidMove(Move move )
-        {
+        { 
             bool isValidMove = false;
             int dstPoint;
 
             if (CurrentPlayer.Type == ePlayer.playerA)
-            {
+            { 
                 dstPoint = move.Source - 1 + move.Dice.Value;
             }
             else

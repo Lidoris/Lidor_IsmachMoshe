@@ -5,11 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace BackgammonLogic
-{
+{ 
     public class Dice
-    {
-        //private Random random;
-        public int Value { get; private set; }
+    
+        public int Value { get; private set; } 
         public bool IsUsed { get;  set; }
 
         public Dice()

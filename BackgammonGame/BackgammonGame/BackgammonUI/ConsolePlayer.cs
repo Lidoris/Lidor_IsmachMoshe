@@ -38,7 +38,7 @@ namespace BackgammonUI
                 chosenDice = dices.FirstDice;
             }
             else
-            { 
+            {  
                 chosenDice = dices.SecondDice;
             }
 

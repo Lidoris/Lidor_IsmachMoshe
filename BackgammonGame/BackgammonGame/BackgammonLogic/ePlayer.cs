@@ -9,6 +9,6 @@ namespace BackgammonLogic
     public enum ePlayer
     {
         playerA,
-        playerB
+        playerB 
     }
 }

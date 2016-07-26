@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BackgammonLogic
 {
-    public interface IPlayer
+    public interface IPlayer 
     {
         ePlayer Type { get;  }
         Stack<Pawn> EatenPawns { get; }

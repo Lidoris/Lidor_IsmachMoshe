@@ -8,7 +8,7 @@ namespace BackgammonLogic
 {
     public class Pawn
     {
-        public ePlayer Owner { get; private set; }
+        public ePlayer Owner { get; private set; } 
 
         public Pawn(ePlayer owner)
         {

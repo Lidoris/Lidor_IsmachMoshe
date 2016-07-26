@@ -38,7 +38,7 @@ namespace BackgammonUI
                 Model.Dices.RollDices();
                 IsDoubleMove = Model.Dices.IsDouble;
                 while (numOfMovesToPlay > 0)
-                {
+                { 
                     UpdateBoardUI();
                     PrintUpdatedGameBoard();
                     PrintTurnMessage();
