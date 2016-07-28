@@ -8,7 +8,6 @@ namespace BackgammonLogic
 { 
     public class Dice
     { 
-    
         public int Value { get; private set; } 
         public bool IsUsed { get;  set; }
 
@@ -27,6 +26,5 @@ namespace BackgammonLogic
         {
             IsUsed = true;
         }
-
     }
 }

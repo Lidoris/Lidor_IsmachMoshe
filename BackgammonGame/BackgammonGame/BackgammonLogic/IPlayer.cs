@@ -12,6 +12,5 @@ namespace BackgammonLogic
         Stack<Pawn> EatenPawns { get; }
 
         Move GetAMove( Dices dices);
-        
     }
 }

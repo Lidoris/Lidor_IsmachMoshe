@@ -21,7 +21,7 @@ namespace BackgammonLogic
 
             initializationBoard();
         }
-        
+
         public void initializationBoard()
         {
             for (int i = 0; i < 2; i++)

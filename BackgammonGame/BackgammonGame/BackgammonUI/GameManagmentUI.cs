@@ -11,10 +11,11 @@ namespace BackgammonUI
     {
         public BackgammonModel Model { get; private set; }
         public Pawn[,] BoardUI { get; private set; }
-        
+        public IHumanPlayer PlugableHumanPlayer { get; set; }
 
         public GameManagmentUI()
         {
+            PlugableHumanPlayer = new ConsolePlayer();
             Model = new BackgammonModel();
             BoardUI = new Pawn[12, 12];
             
@@ -22,8 +23,8 @@ namespace BackgammonUI
 
         public void CreatePlayers()
         {
-            Model.PlayerA = new ConsolePlayer(ePlayer.playerA);
-            Model.PlayerB = new ConsolePlayer(ePlayer.playerB);
+            Model.PlayerA = new HumanPlayer(ePlayer.playerA, PlugableHumanPlayer);
+            Model.PlayerB = new HumanPlayer(ePlayer.playerB, PlugableHumanPlayer);
             Model.initCurrentPlayer();
         }
 
@@ -37,7 +38,6 @@ namespace BackgammonUI
             {
                 Model.SwitchPlayer();
                 Model.Dices.RollDices();
-                
                 IsDoubleMove = Model.Dices.IsDouble;
                 while (numOfMovesToPlay > 0)
                 { 
@@ -64,7 +64,6 @@ namespace BackgammonUI
                         Console.ReadLine();
                         numOfMovesToPlay = 0;
                     }
-
                     
                     if (numOfMovesToPlay == 0 && !Model.IsGameOver)
                     {
@@ -76,16 +75,13 @@ namespace BackgammonUI
                     }
                 }
 
-                
                 numOfMovesToPlay = 2;
-               // Model.GameOver();
             }
 
             UpdateBoardUI();
             PrintUpdatedGameBoard();
             Model.SwitchPlayer();
             PrintGameOverMsg();
-            Console.ReadLine();
         }
 
         public void PrintGameOverMsg()
@@ -213,8 +209,6 @@ namespace BackgammonUI
                 if (i == 6)
                 {
                     Console.Write(barDivider);
-                    //Console.WriteLine();
-
                 }
 
                 for (int j = 0; j < 12; j++)

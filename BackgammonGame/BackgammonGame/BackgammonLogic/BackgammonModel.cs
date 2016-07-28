@@ -11,10 +11,9 @@ namespace BackgammonLogic
         public GameBoard Board { get; private set; }
         public bool IsGameOver { get; private set; }
         public IPlayer CurrentPlayer { get; private set; }
-        public IPlayer PlayerA { get; set; } // set is public!?!?!
+        public IPlayer PlayerA { get; set; }
         public IPlayer PlayerB { get; set; }
         public Dices Dices { get; private set; }
-       
 
         public BackgammonModel()
         {
@@ -167,17 +166,15 @@ namespace BackgammonLogic
             }
             else
             {
-               
-                if (CurrentPlayer.EatenPawns.Count == 0 && AllPawnsInHomeBoard()   )
+                if (CurrentPlayer.EatenPawns.Count == 0 && AllPawnsInHomeBoard())
                 {
                     int dst = CurrentPlayer.Type == PlayerA.Type ? 25 - move.Dice.Value : move.Dice.Value;
-                    if (Board.Points[dst-1].Count > 0   )
+                    if (Board.Points[dst-1].Count > 0 && Board.Points[dst - 1].Peek().Owner == CurrentPlayer.Type)
                     {
                         if (move.Source == dst)
                         {
                             isValidMove = true;
                         }
-                        
                     }
                     else
                     {
@@ -185,8 +182,7 @@ namespace BackgammonLogic
                     }
                 } 
             }
-             
-            
+
             return isValidMove;
         }
 
@@ -211,7 +207,6 @@ namespace BackgammonLogic
             if (CurrentPlayer.EatenPawns.Count > 0)
             {
                 i = PlayerA.EatenPawns.Count > 0 ? 0 : 25;
-
                 foreach (Dice dice in new[] { Dices.FirstDice, Dices.SecondDice })
                 {
                     if (!dice.IsUsed)
@@ -321,14 +316,13 @@ namespace BackgammonLogic
                 dstPoint = move.Source - 1 - move.Dice.Value;
             }
 
-           
-            if (dstPoint <= 0 || dstPoint >= 24)
+            if (dstPoint < 0 || dstPoint >= 24)
             {
                 Board.Points[move.Source - 1].Pop();
             }
             else
             {
-                if (Board.Points[dstPoint].Count > 0) //? לא חורג
+                if (Board.Points[dstPoint].Count > 0) 
                 {
                     if (Board.Points[dstPoint].Peek().Owner != CurrentPlayer.Type)
                     {
@@ -353,12 +347,6 @@ namespace BackgammonLogic
                     Board.Points[dstPoint].Push(Board.Points[move.Source - 1].Pop());
                 }
             }
-
-            
-           
-
-
-             
         }
     }
 }

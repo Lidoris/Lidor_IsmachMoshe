@@ -52,6 +52,7 @@
     <Compile Include="ePlayer.cs" />
     <Compile Include="GameBoard.cs" />
     <Compile Include="HumanPlayer.cs" />
+    <Compile Include="IHumanPlayer.cs" />
     <Compile Include="Move.cs" />
     <Compile Include="Pawn.cs" />
     <Compile Include="IPlayer.cs" />
