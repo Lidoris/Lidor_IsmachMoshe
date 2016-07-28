@@ -25,7 +25,7 @@ namespace BackgammonLogic
 
         public void initCurrentPlayer()
         {
-            CurrentPlayer = PlayerA;
+            CurrentPlayer = PlayerB;
         }
 
         public void SwitchPlayer()
@@ -64,13 +64,13 @@ namespace BackgammonLogic
 
             if (CurrentPlayer.Type == ePlayer.playerA)
             {
-                j = 6;
-                length = Board.Points.Length;
+                j = 0;
+                length = 18;
             }
             else
             {
-                j = 0;
-                length = 18;
+                j = 6;
+                length = Board.Points.Length;
             }
 
             for (int i = j; i < length; i++)
@@ -108,6 +108,7 @@ namespace BackgammonLogic
             return isValidBearingOff;
         }
 
+         
         public bool CheckIsValidMove(Move move )
         { 
             bool isValidMove = false;
@@ -124,13 +125,35 @@ namespace BackgammonLogic
 
             if (dstPoint <= 23 && dstPoint >= 0)
             {
-                if (Board.Points[move.Source - 1].Count > 0)
+                if(CurrentPlayer.EatenPawns.Count > 0 )
+                {
+                    if (Board.Points[dstPoint].Count > 0)
+                    {
+                        if (Board.Points[dstPoint].Peek().Owner == CurrentPlayer.Type)
+                        {
+                            isValidMove = true;
+                        }
+                        else if (Board.Points[dstPoint].Count == 1) // the possibility to "eat " an opponent pawn 
+                        {
+                            isValidMove = true;
+                        }
+                    }
+                    else if (Board.Points[dstPoint].Count == 0)
+                    {
+                        isValidMove = true;
+                    }
+                }
+                else if(Board.Points[move.Source - 1].Count > 0)
                 {
                     if (Board.Points[move.Source - 1].Peek().Owner == CurrentPlayer.Type)
                     {
                         if (Board.Points[dstPoint].Count > 0)
                         {
                             if (Board.Points[dstPoint].Peek().Owner == CurrentPlayer.Type)
+                            {
+                                isValidMove = true;
+                            }
+                            else if (Board.Points[dstPoint].Count == 1) 
                             {
                                 isValidMove = true;
                             }
@@ -141,6 +164,26 @@ namespace BackgammonLogic
                         }
                     }
                 }
+            }
+            else
+            {
+               
+                if (CurrentPlayer.EatenPawns.Count == 0 && AllPawnsInHomeBoard()   )
+                {
+                    int dst = CurrentPlayer.Type == PlayerA.Type ? 25 - move.Dice.Value : move.Dice.Value;
+                    if (Board.Points[dst-1].Count > 0   )
+                    {
+                        if (move.Source == dst)
+                        {
+                            isValidMove = true;
+                        }
+                        
+                    }
+                    else
+                    {
+                        isValidMove = true;
+                    }
+                } 
             }
              
             
@@ -163,9 +206,12 @@ namespace BackgammonLogic
         {
             Move move;
             bool isPossible = false;
+            int i;
 
-            for (int i = 1; i <= Board.Points.Length; i++)
+            if (CurrentPlayer.EatenPawns.Count > 0)
             {
+                i = PlayerA.EatenPawns.Count > 0 ? 0 : 25;
+
                 foreach (Dice dice in new[] { Dices.FirstDice, Dices.SecondDice })
                 {
                     if (!dice.IsUsed)
@@ -175,6 +221,24 @@ namespace BackgammonLogic
                         {
                             isPossible = true;
                             break;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                for (i = 1; i <= Board.Points.Length; i++)
+                {
+                    foreach (Dice dice in new[] { Dices.FirstDice, Dices.SecondDice })
+                    {
+                        if (!dice.IsUsed)
+                        {
+                            move = new Move(i, dice);
+                            if (CheckIsValidMove(move))
+                            {
+                                isPossible = true;
+                                break;
+                            }
                         }
                     }
                 }
@@ -193,13 +257,13 @@ namespace BackgammonLogic
 
             if (CurrentPlayer.Type == ePlayer.playerA)
             {
-                j = 0;
-                length = 5;
+                j = 19;
+                length = 24;
             }
             else
             {
-                j = 19;
-                length = 24;
+                j = 1;
+                length = 6;
             }
 
             for (int i = j; i <= length; i++)
@@ -208,11 +272,32 @@ namespace BackgammonLogic
                 {
                     if (!dice.IsUsed)
                     {
-                        move = new Move(i, dice);
-                        if (CheckIsValidBearingOff(move))
+                        int dst = CurrentPlayer.Type == PlayerA.Type ? 25 - dice.Value : dice.Value;
+
+                        if (Board.Points[dst - 1].Count > 0)
                         {
                             isPossible = true;
-                            break;
+                        }
+                        else
+                        {
+                            if (Board.Points[i - 1].Count > 0)
+                            {
+                                move = new Move(i, dice);
+                                if (i - dst > 0)
+                                {
+                                    if (CheckIsValidMove(move))
+                                    {
+                                        isPossible = true;
+                                    }
+                                }
+                                else
+                                {
+                                    if (CheckIsValidBearingOff(move))
+                                    {
+                                        isPossible = true;
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -226,6 +311,7 @@ namespace BackgammonLogic
         {
             int dstPoint;
 
+            move.Dice.UseDice();
             if (CurrentPlayer.Type == ePlayer.playerA)
             {
                 dstPoint = move.Source - 1 + move.Dice.Value;
@@ -235,8 +321,44 @@ namespace BackgammonLogic
                 dstPoint = move.Source - 1 - move.Dice.Value;
             }
 
-            move.Dice.UseDice();
-            Board.Points[dstPoint].Push(Board.Points[move.Source -1].Pop()); 
+           
+            if (dstPoint <= 0 || dstPoint >= 24)
+            {
+                Board.Points[move.Source - 1].Pop();
+            }
+            else
+            {
+                if (Board.Points[dstPoint].Count > 0) //? לא חורג
+                {
+                    if (Board.Points[dstPoint].Peek().Owner != CurrentPlayer.Type)
+                    {
+                        if (CurrentPlayer.Type == PlayerA.Type)
+                        {
+                            PlayerB.EatenPawns.Push(Board.Points[dstPoint].Pop());
+
+                        }
+                        else
+                        {
+                            PlayerA.EatenPawns.Push(Board.Points[dstPoint].Pop());
+                        }
+                    }
+                }
+
+                if (move.Source == 0 || move.Source == 25)
+                {
+                    Board.Points[dstPoint].Push(CurrentPlayer.EatenPawns.Pop());
+                }
+                else
+                {
+                    Board.Points[dstPoint].Push(Board.Points[move.Source - 1].Pop());
+                }
+            }
+
+            
+           
+
+
+             
         }
     }
 }

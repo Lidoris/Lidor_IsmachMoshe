@@ -35,7 +35,9 @@ namespace BackgammonUI
             CreatePlayers();
             while (!Model.IsGameOver)
             {
+                Model.SwitchPlayer();
                 Model.Dices.RollDices();
+                
                 IsDoubleMove = Model.Dices.IsDouble;
                 while (numOfMovesToPlay > 0)
                 { 
@@ -43,7 +45,7 @@ namespace BackgammonUI
                     PrintUpdatedGameBoard();
                     PrintTurnMessage();
                     PrintDicesValue();
-                    if (Model.IsPossibleToMove())
+                    if (Model.IsPossibleToMove() && !Model.IsGameOver)
                     {
                         move = Model.CurrentPlayer.GetAMove(Model.Dices);
                         while (!Model.CheckIsValidMove(move))
@@ -53,16 +55,18 @@ namespace BackgammonUI
                         }
 
                         Model.ExecuteMove(move);
-
+                        numOfMovesToPlay--;
+                        Model.GameOver();
                     }
                     else
                     {
                         Console.WriteLine("There is no possible moves, {0} Press any key to continue.", Environment.NewLine);
                         Console.ReadLine();
+                        numOfMovesToPlay = 0;
                     }
 
-                    numOfMovesToPlay--;
-                    if (numOfMovesToPlay == 0)
+                    
+                    if (numOfMovesToPlay == 0 && !Model.IsGameOver)
                     {
                         if (IsDoubleMove)
                         {
@@ -72,9 +76,21 @@ namespace BackgammonUI
                     }
                 }
 
-                Model.SwitchPlayer();
+                
                 numOfMovesToPlay = 2;
+               // Model.GameOver();
             }
+
+            UpdateBoardUI();
+            PrintUpdatedGameBoard();
+            Model.SwitchPlayer();
+            PrintGameOverMsg();
+            Console.ReadLine();
+        }
+
+        public void PrintGameOverMsg()
+        {
+            Console.WriteLine(" !!! THE GAME IS OVER, {0} WON !!!", Model.CurrentPlayer.Type);
         }
 
         public void PrintDicesValue()
@@ -174,14 +190,18 @@ namespace BackgammonUI
         public void PrintUpdatedGameBoard()
         {
             char divider = '-';
-            StringBuilder dividerBuilder = new StringBuilder("--");
-            
+            StringBuilder dividerBuilder = new StringBuilder("-");
+            string barDivider = string.Format("|                       |BAR|                       |{0}", Environment.NewLine);
 
-            dividerBuilder.Append(divider, 12 * 4);
+            dividerBuilder.Append(divider, 13 * 4);
             Console.Clear();
             for (int i = 13; i < 25; i++)
             {
-                Console.Write("{0,4}", i); 
+                Console.Write("{0,4}", i);
+                if (i == 18)
+                {
+                    Console.Write("    ");
+                }
             }
             
             Console.Write("{0}{1}", Environment.NewLine, dividerBuilder);
@@ -192,8 +212,8 @@ namespace BackgammonUI
 
                 if (i == 6)
                 {
-                    Console.Write(dividerBuilder);
-                    Console.WriteLine();
+                    Console.Write(barDivider);
+                    //Console.WriteLine();
 
                 }
 
@@ -205,7 +225,24 @@ namespace BackgammonUI
                     }
                     else
                     {
-                        Console.Write("||");
+                        Console.Write("| ");
+                        if (i == 5 &&  Model.PlayerB.EatenPawns.Count > 0)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Blue;
+                            Console.Write("{0}", Model.PlayerB.EatenPawns.Peek());
+                        }
+                        else if (i == 6 && Model.PlayerA.EatenPawns.Count > 0)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.Write("{0}", Model.PlayerA.EatenPawns.Peek());
+                        }
+                        else
+                        {
+                            Console.Write(" ");
+                        }
+
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.Write(" |");
                     }
 
                     if (BoardUI[i, j] != null)
@@ -230,7 +267,11 @@ namespace BackgammonUI
             Console.Write("{0}{1}{2}", Environment.NewLine, dividerBuilder, Environment.NewLine);
             for (int i = 12; i > 0; i--)
             {
-                Console.Write("{0,4}", i); 
+                Console.Write("{0,4}", i);
+                if (i == 7)
+                {
+                    Console.Write("   ");
+                }
             }
 
             Console.WriteLine();

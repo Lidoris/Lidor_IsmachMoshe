@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace BackgammonLogic
 { 
     public class Dice
+    { 
     
         public int Value { get; private set; } 
         public bool IsUsed { get;  set; }

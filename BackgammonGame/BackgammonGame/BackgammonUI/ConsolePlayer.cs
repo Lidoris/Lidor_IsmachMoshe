@@ -11,6 +11,7 @@ namespace BackgammonUI
     {
         public ePlayer Type { get;  }
         public Stack<Pawn> EatenPawns { get; }
+        public int HomeBoardIndex { get; }
 
         public ConsolePlayer(ePlayer type)
         {
@@ -23,6 +24,11 @@ namespace BackgammonUI
             Dice chosenDice;
             int srcPoint;
             int diceValue;
+
+            if (EatenPawns.Count != 0)
+            {
+                Console.WriteLine("The move will be execute with the pawn on the bar.");
+            }
             Console.Write("Choose a dice value : ");
             int.TryParse(Console.ReadLine(), out diceValue);
             while ((diceValue != dices.FirstDice.Value && diceValue != dices.SecondDice.Value )||
@@ -42,16 +48,31 @@ namespace BackgammonUI
                 chosenDice = dices.SecondDice;
             }
 
-            Console.Write("From which point you want to move? Choose a number from 1 until 24 :");
-            bool parseSucceed = int.TryParse(Console.ReadLine(), out srcPoint);
-            while ((!parseSucceed) || (srcPoint < 1 || srcPoint > 24))
+            if (EatenPawns.Count == 0)
             {
-                Console.Write("Incorrect input, Choose a point from 1 until 24  : ");
-                parseSucceed = int.TryParse(Console.ReadLine(), out srcPoint);
+                Console.Write("From which point you want to move? Choose a number from 1 until 24 :");
+                bool parseSucceed = int.TryParse(Console.ReadLine(), out srcPoint);
+                while ((!parseSucceed) || (srcPoint < 1 || srcPoint > 24))
+                {
+                    Console.Write("Incorrect input, Choose a point from 1 until 24  : ");
+                    parseSucceed = int.TryParse(Console.ReadLine(), out srcPoint);
+                }
+
+                return new Move(srcPoint, chosenDice);
+            }
+            else
+            {
+                if (Type == ePlayer.playerA)
+                {
+                    return new Move(0, chosenDice);
+                }
+                else
+                {
+                    return new Move(25, chosenDice);
+                }
             }
 
-
-            return new Move(srcPoint, chosenDice);
+            
         }
     }
 }

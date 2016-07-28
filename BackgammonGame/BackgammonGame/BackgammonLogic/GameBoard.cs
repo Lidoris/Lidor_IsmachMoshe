@@ -21,13 +21,13 @@ namespace BackgammonLogic
 
             initializationBoard();
         }
-
+        
         public void initializationBoard()
         {
             for (int i = 0; i < 2; i++)
             {
                 Points[0].Push(new Pawn(ePlayer.playerA));
-                Points[23].Push(new Pawn(ePlayer.playerB)); 
+                Points[23].Push(new Pawn(ePlayer.playerB));
             }
 
             for (int i = 0; i < 5; i++)
@@ -44,7 +44,5 @@ namespace BackgammonLogic
                 Points[7].Push(new Pawn(ePlayer.playerB));
             }
         }
-
-       
     }
 }
