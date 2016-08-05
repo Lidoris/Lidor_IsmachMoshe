@@ -36,7 +36,7 @@ namespace Primes
         {
             List<long> ListOfPrimes = new List<long>();
             bool isPrime;
-            long minNum, maxNum;
+            long minNum, maxNum; 
             Random rand = new Random();
             object lockObj = new object();
 
@@ -58,7 +58,7 @@ namespace Primes
                     {
                         if (i % j == 0)
                         {
-                            isPrime = false;
+                            isPrime = false; 
                             break;
                         }
                     }
