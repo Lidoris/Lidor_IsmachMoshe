@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace PrimesCalculator_Async
-{
+{ 
     public partial class PrimesCalculatorForm : Form
     {
         private int _amountOfPrimes;
@@ -22,7 +22,7 @@ namespace PrimesCalculator_Async
         {
             InitializeComponent();
         }
-
+         
         private async void calculateButton_Click(object sender, EventArgs e)
         {
             string outputFileName;
