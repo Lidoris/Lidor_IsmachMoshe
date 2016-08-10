@@ -14,7 +14,6 @@ namespace PrimesCalculator_Async
 { 
     public partial class PrimesCalculatorForm : Form
     {
-        private int _amountOfPrimes;
         private CancellationTokenSource _cancellationTokenSource;
         private CancellationToken _cancellationToken;
         
@@ -29,32 +28,39 @@ namespace PrimesCalculator_Async
             _cancellationTokenSource = new CancellationTokenSource();
             _cancellationToken = _cancellationTokenSource.Token;
             outputFileName = outputFileTextBox.Text;
+            cancelButton.Enabled = true;
             if (string.IsNullOrWhiteSpace(outputFileName))
             {
                 MessageBox.Show("Invalid output file name,  Please try again.");
             }
             else
             {
-                await Task.Run(() =>
-                {
-                    CountPrimesAsync(_cancellationToken);
-                }, _cancellationToken);
-                amountOfPrimesLabel.Text = $"Amount of primes:{_amountOfPrimes}";
+                 var x = await CountPrimesAsync(_cancellationToken);// why int?
+                
+                amountOfPrimesLabel.Text = $"Amount of primes:{x}";
                 using (StreamWriter streamWriter = new StreamWriter(outputFileName.Trim() + ".txt"))
                 {
-                    streamWriter.WriteLine($"Amount of primes:{_amountOfPrimes}");
+                    streamWriter.WriteLine($"Amount of primes:{x}");
                 }
             }
         }
 
-        private void CountPrimesAsync(CancellationToken cancellationToken)
+        private async Task<int> CountPrimesAsync(CancellationToken cancellationToken)
+        {
+            var result = await Task<int>.Factory.StartNew( t=> CountPrimes(cancellationToken), cancellationToken );
+            return result;
+        }
+
+        private int CountPrimes(CancellationToken cancellationToken)
         {
             bool isPrime;
             long minNum, maxNum;
             long firstNum, secondNum;
             bool inputValid;
+            int amountOfPrimes;
+             
 
-            _amountOfPrimes = 0;
+            amountOfPrimes = 0;
             inputValid = long.TryParse(StartTextBox.Text, out firstNum);
             inputValid = long.TryParse(EndTextBox.Text, out secondNum) && inputValid;
             if (!inputValid)
@@ -69,10 +75,10 @@ namespace PrimesCalculator_Async
             {
                 if (cancellationToken.IsCancellationRequested)
                 {
-                    return;
+                    return amountOfPrimes;
                 }
                 isPrime = true;
-                for (int j = 2; j < i; j++)
+                for (int j = 2; j*j <= i; j++)
                 {
                     if (i % j == 0)
                     {
@@ -83,13 +89,16 @@ namespace PrimesCalculator_Async
 
                 if (isPrime)
                 {
-                    _amountOfPrimes++;
+                    amountOfPrimes++;
                 }
             }
-        }
 
+            return amountOfPrimes;
+        }
+        
         private void cancelButton_Click(object sender, EventArgs e)
         {
+            cancelButton.Enabled = false;
             if (_cancellationTokenSource != null)
             {
                 _cancellationTokenSource.Cancel();
