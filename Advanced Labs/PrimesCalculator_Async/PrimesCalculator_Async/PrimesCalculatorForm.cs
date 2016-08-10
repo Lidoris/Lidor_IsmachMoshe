@@ -47,7 +47,7 @@ namespace PrimesCalculator_Async
 
         private async Task<int> CountPrimesAsync(CancellationToken cancellationToken)
         {
-            var result = await Task<int>.Factory.StartNew( t=> CountPrimes(cancellationToken), cancellationToken );
+            var result = await Task.Run(()=> CountPrimes(cancellationToken), cancellationToken );
             return result;
         }
 
