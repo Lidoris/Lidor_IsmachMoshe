@@ -1,0 +1,319 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="PriceCompareDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="chains">
+          <Key>
+            <PropertyRef Name="chain_id" />
+          </Key>
+          <Property Name="chain_id" Type="bigint" Nullable="false" />
+          <Property Name="chain_name" Type="ntext" Nullable="false" />
+        </EntityType>
+        <EntityType Name="items">
+          <Key>
+            <PropertyRef Name="item_id" />
+          </Key>
+          <Property Name="item_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="item_type" Type="ntext" Nullable="false" />
+          <Property Name="item_code" Type="ntext" Nullable="false" />
+          <Property Name="chain_id" Type="bigint" Nullable="false" />
+          <Property Name="item_name" Type="ntext" />
+          <Property Name="manufacturer_name" Type="ntext" />
+          <Property Name="manufacturer_item_description" Type="ntext" />
+          <Property Name="unit_quantity" Type="ntext" />
+          <Property Name="quantity_in_package" Type="ntext" />
+        </EntityType>
+        <EntityType Name="prices">
+          <Key>
+            <PropertyRef Name="item_id" />
+            <PropertyRef Name="store_id" />
+          </Key>
+          <Property Name="item_id" Type="int" Nullable="false" />
+          <Property Name="store_id" Type="int" Nullable="false" />
+          <Property Name="price" Type="real" />
+          <Property Name="unit_of_measure" Type="ntext" />
+        </EntityType>
+        <EntityType Name="stores">
+          <Key>
+            <PropertyRef Name="store_id" />
+          </Key>
+          <Property Name="store_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="chain_id" Type="bigint" Nullable="false" />
+          <Property Name="store_type" Type="int" />
+          <Property Name="store_name" Type="ntext" />
+          <Property Name="address" Type="ntext" />
+          <Property Name="city" Type="ntext" />
+        </EntityType>
+        <Association Name="FK_items_ToTable">
+          <End Role="chains" Type="Self.chains" Multiplicity="1" />
+          <End Role="items" Type="Self.items" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="chains">
+              <PropertyRef Name="chain_id" />
+            </Principal>
+            <Dependent Role="items">
+              <PropertyRef Name="chain_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_prices_ToTable">
+          <End Role="stores" Type="Self.stores" Multiplicity="1" />
+          <End Role="prices" Type="Self.prices" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="stores">
+              <PropertyRef Name="store_id" />
+            </Principal>
+            <Dependent Role="prices">
+              <PropertyRef Name="store_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_prices_ToTable_1">
+          <End Role="items" Type="Self.items" Multiplicity="1" />
+          <End Role="prices" Type="Self.prices" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="items">
+              <PropertyRef Name="item_id" />
+            </Principal>
+            <Dependent Role="prices">
+              <PropertyRef Name="item_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_stores_ToTable">
+          <End Role="chains" Type="Self.chains" Multiplicity="1" />
+          <End Role="stores" Type="Self.stores" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="chains">
+              <PropertyRef Name="chain_id" />
+            </Principal>
+            <Dependent Role="stores">
+              <PropertyRef Name="chain_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PriceCompareDBModelStoreContainer">
+          <EntitySet Name="chains" EntityType="Self.chains" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="items" EntityType="Self.items" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="prices" EntityType="Self.prices" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="stores" EntityType="Self.stores" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_items_ToTable" Association="Self.FK_items_ToTable">
+            <End Role="chains" EntitySet="chains" />
+            <End Role="items" EntitySet="items" />
+          </AssociationSet>
+          <AssociationSet Name="FK_prices_ToTable" Association="Self.FK_prices_ToTable">
+            <End Role="stores" EntitySet="stores" />
+            <End Role="prices" EntitySet="prices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_prices_ToTable_1" Association="Self.FK_prices_ToTable_1">
+            <End Role="items" EntitySet="items" />
+            <End Role="prices" EntitySet="prices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_stores_ToTable" Association="Self.FK_stores_ToTable">
+            <End Role="chains" EntitySet="chains" />
+            <End Role="stores" EntitySet="stores" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PriceCompareDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="chain">
+          <Key>
+            <PropertyRef Name="chain_id" />
+          </Key>
+          <Property Name="chain_id" Type="Int64" Nullable="false" />
+          <Property Name="chain_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="items" Relationship="Self.FK_items_ToTable" FromRole="chains" ToRole="items" />
+          <NavigationProperty Name="stores" Relationship="Self.FK_stores_ToTable" FromRole="chains" ToRole="stores" />
+        </EntityType>
+        <EntityType Name="item">
+          <Key>
+            <PropertyRef Name="item_id" />
+          </Key>
+          <Property Name="item_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="item_type" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="item_code" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="chain_id" Type="Int64" Nullable="false" />
+          <Property Name="item_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="manufacturer_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="manufacturer_item_description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="unit_quantity" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="quantity_in_package" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="chain" Relationship="Self.FK_items_ToTable" FromRole="items" ToRole="chains" />
+          <NavigationProperty Name="prices" Relationship="Self.FK_prices_ToTable_1" FromRole="items" ToRole="prices" />
+        </EntityType>
+        <EntityType Name="price">
+          <Key>
+            <PropertyRef Name="item_id" />
+            <PropertyRef Name="store_id" />
+          </Key>
+          <Property Name="item_id" Type="Int32" Nullable="false" />
+          <Property Name="store_id" Type="Int32" Nullable="false" />
+          <Property Name="price1" Type="Single" />
+          <Property Name="unit_of_measure" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="item" Relationship="Self.FK_prices_ToTable_1" FromRole="prices" ToRole="items" />
+          <NavigationProperty Name="store" Relationship="Self.FK_prices_ToTable" FromRole="prices" ToRole="stores" />
+        </EntityType>
+        <EntityType Name="store">
+          <Key>
+            <PropertyRef Name="store_id" />
+          </Key>
+          <Property Name="store_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="chain_id" Type="Int64" Nullable="false" />
+          <Property Name="store_type" Type="Int32" />
+          <Property Name="store_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="city" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="chain" Relationship="Self.FK_stores_ToTable" FromRole="stores" ToRole="chains" />
+          <NavigationProperty Name="prices" Relationship="Self.FK_prices_ToTable" FromRole="stores" ToRole="prices" />
+        </EntityType>
+        <Association Name="FK_items_ToTable">
+          <End Role="chains" Type="Self.chain" Multiplicity="1" />
+          <End Role="items" Type="Self.item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="chains">
+              <PropertyRef Name="chain_id" />
+            </Principal>
+            <Dependent Role="items">
+              <PropertyRef Name="chain_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_stores_ToTable">
+          <End Role="chains" Type="Self.chain" Multiplicity="1" />
+          <End Role="stores" Type="Self.store" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="chains">
+              <PropertyRef Name="chain_id" />
+            </Principal>
+            <Dependent Role="stores">
+              <PropertyRef Name="chain_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_prices_ToTable_1">
+          <End Role="items" Type="Self.item" Multiplicity="1" />
+          <End Role="prices" Type="Self.price" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="items">
+              <PropertyRef Name="item_id" />
+            </Principal>
+            <Dependent Role="prices">
+              <PropertyRef Name="item_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_prices_ToTable">
+          <End Role="stores" Type="Self.store" Multiplicity="1" />
+          <End Role="prices" Type="Self.price" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="stores">
+              <PropertyRef Name="store_id" />
+            </Principal>
+            <Dependent Role="prices">
+              <PropertyRef Name="store_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PriceCompareDBEntitie" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="chains" EntityType="Self.chain" />
+          <EntitySet Name="items" EntityType="Self.item" />
+          <EntitySet Name="prices" EntityType="Self.price" />
+          <EntitySet Name="stores" EntityType="Self.store" />
+          <AssociationSet Name="FK_items_ToTable" Association="Self.FK_items_ToTable">
+            <End Role="chains" EntitySet="chains" />
+            <End Role="items" EntitySet="items" />
+          </AssociationSet>
+          <AssociationSet Name="FK_stores_ToTable" Association="Self.FK_stores_ToTable">
+            <End Role="chains" EntitySet="chains" />
+            <End Role="stores" EntitySet="stores" />
+          </AssociationSet>
+          <AssociationSet Name="FK_prices_ToTable_1" Association="Self.FK_prices_ToTable_1">
+            <End Role="items" EntitySet="items" />
+            <End Role="prices" EntitySet="prices" />
+          </AssociationSet>
+          <AssociationSet Name="FK_prices_ToTable" Association="Self.FK_prices_ToTable">
+            <End Role="stores" EntitySet="stores" />
+            <End Role="prices" EntitySet="prices" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PriceCompareDBModelStoreContainer" CdmEntityContainer="PriceCompareDBEntitie">
+          <EntitySetMapping Name="chains">
+            <EntityTypeMapping TypeName="PriceCompareDBModel.chain">
+              <MappingFragment StoreEntitySet="chains">
+                <ScalarProperty Name="chain_id" ColumnName="chain_id" />
+                <ScalarProperty Name="chain_name" ColumnName="chain_name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="items">
+            <EntityTypeMapping TypeName="PriceCompareDBModel.item">
+              <MappingFragment StoreEntitySet="items">
+                <ScalarProperty Name="item_id" ColumnName="item_id" />
+                <ScalarProperty Name="item_type" ColumnName="item_type" />
+                <ScalarProperty Name="item_code" ColumnName="item_code" />
+                <ScalarProperty Name="chain_id" ColumnName="chain_id" />
+                <ScalarProperty Name="item_name" ColumnName="item_name" />
+                <ScalarProperty Name="manufacturer_name" ColumnName="manufacturer_name" />
+                <ScalarProperty Name="manufacturer_item_description" ColumnName="manufacturer_item_description" />
+                <ScalarProperty Name="unit_quantity" ColumnName="unit_quantity" />
+                <ScalarProperty Name="quantity_in_package" ColumnName="quantity_in_package" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="prices">
+            <EntityTypeMapping TypeName="PriceCompareDBModel.price">
+              <MappingFragment StoreEntitySet="prices">
+                <ScalarProperty Name="item_id" ColumnName="item_id" />
+                <ScalarProperty Name="store_id" ColumnName="store_id" />
+                <ScalarProperty Name="price1" ColumnName="price" />
+                <ScalarProperty Name="unit_of_measure" ColumnName="unit_of_measure" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="stores">
+            <EntityTypeMapping TypeName="PriceCompareDBModel.store">
+              <MappingFragment StoreEntitySet="stores">
+                <ScalarProperty Name="store_id" ColumnName="store_id" />
+                <ScalarProperty Name="chain_id" ColumnName="chain_id" />
+                <ScalarProperty Name="store_type" ColumnName="store_type" />
+                <ScalarProperty Name="store_name" ColumnName="store_name" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="city" ColumnName="city" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
