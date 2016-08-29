@@ -74,102 +74,124 @@ namespace PriceCompareModel
         {
             using (PriceCompareDBEntitie context = new PriceCompareDBEntitie())
             {
+                chain curChain;
+                List<store> listOfStores = new List<store>();
                 DirectoryInfo allPrices = new DirectoryInfo(@"C:\finalProject_PriceCompare\AllPrices\bin\prices");
                 allPrices.GetDirectories();
                 foreach (var subDirectory in allPrices.GetDirectories())
                 {
-                    if (subDirectory.Name == "logs" || subDirectory.Name == "mega" || subDirectory.Name == "shufersal")
-                    {
-                        continue;
-                    }
 
-                    AddChainToDB(subDirectory, context);
-                    
+                    DecompressAll();
 
+                    //if (subDirectory.Name == "logs" || subDirectory.Name == "mega" || subDirectory.Name == "shufersal")
+                    //{
+                    //    continue;
+                    //}
+
+                    //string StoreFilePath = subDirectory.GetFiles().Where(t => t.Name.StartsWith("Stores")).Single().FullName;
+                    //XDocument storesDoc = XDocument.Load(StoreFilePath);
+
+                    //curChain = AddChainToDB(storesDoc, context);
+                    //chain existingChain = context.chains.FirstOrDefault(c => c.chain_id == curChain.chain_id);
+                    // context.SaveChanges();
+
+                    //if (existingChain == null)
+                    //{
+                    //    context.chains.Add(curChain);
+                    //}
+
+                    //listOfStores = AddStoresToDB(storesDoc, context, curChain);
+                    //var x = listOfStores.Where(a => a.store_id == 0).Any();
+                    //listOfStores.ForEach(s => {
+                    //    context.stores.Add(s);
+                    //    context.SaveChanges();
+                    //}
+                    //    );
+                
+                   
                     //foreach (var file in subDirectory.GetFiles("*.xml"))
                     //{
                     //    XmlToDB(file, context);
                     //}
                 }
 
-                context.SaveChanges();
+                //context.SaveChanges();
             }
         }
 
-        private void AddStoresToDB( XElement StoresElm, PriceCompareDBEntitie context , long chain_id)
+       
+
+        public chain AddChainToDB(XDocument storesDoc, PriceCompareDBEntitie context)
         {
-            int store_id;
-           
-            //int? store_type;
-
-            foreach (var Store in StoresElm.Elements("Store"))
-            {
-                store store = new store();
-                int.TryParse(Store.Element("StoreId").Value, out store_id);
-               
-                //int.TryParse(Store.Element("StoreType").Value, out store_type);
-                store.store_id = store_id;
-
-                store.chain_id = chain_id;  
-                
-                store.store_type = null;
-                store.store_name = Store.Element("StoreName").Value;
-                store.address = Store.Element("Address").Value;
-                store.city = Store.Element("City").Value;
-                if (context.stores.Contains(store))
-                {
-                    context.stores.Remove(store);
-                }
-
-                context.stores.Add(store);
-                
-            }
-            
-        }
-
-        public void AddChainToDB(DirectoryInfo subDirectory, PriceCompareDBEntitie context)
-        {
-            string StoreFilePath = subDirectory.GetFiles().Where(t => t.Name.StartsWith("Stores")).Single().FullName;
-            XDocument storesDoc = XDocument.Load(StoreFilePath);
             XElement root = storesDoc.Root;
-            XElement StoresElm = root.Element("SubChains").Element("SubChain").Element("Stores");
             chain chain = new chain();
             long chain_id;
 
             long.TryParse(root.Element("ChainId").Value, out chain_id);
             chain.chain_id = chain_id;
             chain.chain_name = root.Element("ChainName").Value;
-            if (context.chains.Contains(chain)) 
-            {
-                context.chains.Remove(chain);
-            }
 
-            context.chains.Add(chain);
-            AddStoresToDB(StoresElm, context, chain.chain_id);
-            
+            return chain;
         }
-        
 
-        public void XmlToDB(FileInfo xmlFile , PriceCompareDBEntitie context)
+        private List<store> AddStoresToDB(XDocument storesDoc, PriceCompareDBEntitie context, chain chain)
         {
-            XDocument doc = XDocument.Load(xmlFile.FullName);
-           
-            foreach (XElement itemElement in doc.Root.Element("Items").Elements("Item"))
+            List<store> listOfStores = new List<store>();
+            XElement StoresElm = storesDoc.Root.Element("SubChains").Element("SubChain").Element("Stores");
+            int store_id;
+            
+            foreach (var Store in StoresElm.Elements("Store"))
             {
-                item item = new item();
-                item.item_code = itemElement.Element("ItemCode").Value;
-                item.item_type = itemElement.Element("ItemType").Value;
-                item.item_name = itemElement.Element("ItemName").Value;
-                item.manufacturer_name = itemElement.Element("ManufacturerName").Value;
-                item.manufacturer_item_description = itemElement.Element("ManufacturerItemDescription").Value;
-                item.unit_quantity = itemElement.Element("UnitQty").Value;
-                item.quantity_in_package = itemElement.Element("Quantity").Value;
-                context.items.Add(item);
+                store store = new store();
+                int.TryParse(Store.Element("StoreId").Value, out store_id);
+                //int.TryParse(Store.Element("StoreType").Value, out store_type);
+                store.store_id = store_id;
+               // store.chain = chain;
+                store.chain_id = chain.chain_id;
+                store.store_type = null;
+                store.store_name = Store.Element("StoreName").Value;
+                store.address = Store.Element("Address").Value;
+                store.city = Store.Element("City").Value;
 
+                var existingStore = context.stores.FirstOrDefault(s => s.store_id == store.store_id && s.chain_id == store.chain_id);
+
+                if (existingStore == null)
+                {
+                    listOfStores.Add(store);
+                }
+                else
+                {
+                    // existingStore.chain = chain;
+                    existingStore.chain_id = chain.chain_id;
+                    existingStore.store_type = null;
+                    existingStore.store_name = Store.Element("StoreName").Value;
+                    existingStore.address = Store.Element("Address").Value;
+                    existingStore.city = Store.Element("City").Value;
+                }
             }
+            return listOfStores;
+        }
+
+        //public void XmlToDB(FileInfo xmlFile , PriceCompareDBEntitie context)
+        //{
+        //    XDocument doc = XDocument.Load(xmlFile.FullName);
+           
+        //    foreach (XElement itemElement in doc.Root.Element("Items").Elements("Item"))
+        //    {
+        //        item item = new item();
+        //        item.item_code = itemElement.Element("ItemCode").Value;
+        //        item.item_type = itemElement.Element("ItemType").Value;
+        //        item.item_name = itemElement.Element("ItemName").Value;
+        //        item.manufacturer_name = itemElement.Element("ManufacturerName").Value;
+        //        item.manufacturer_item_description = itemElement.Element("ManufacturerItemDescription").Value;
+        //        item.unit_quantity = itemElement.Element("UnitQty").Value;
+        //        item.quantity_in_package = itemElement.Element("Quantity").Value;
+        //        context.items.Add(item);
+
+        //    }
             
 
-        }
+        //}
 
 
     }

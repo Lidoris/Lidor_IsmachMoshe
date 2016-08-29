@@ -26,6 +26,7 @@ namespace PriceCompareModel
         public string store_name { get; set; }
         public string address { get; set; }
         public string city { get; set; }
+        public int store_key { get; set; }
     
         public virtual chain chain { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
