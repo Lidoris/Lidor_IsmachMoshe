@@ -12,14 +12,14 @@ namespace PriceCompareModel
 {
     public class DBManager
     {
-        public void DecompressAll()
+        public void DecompressAllFiles()
         {
             DirectoryInfo allPrices = new DirectoryInfo(@"C:\finalProject_PriceCompare\AllPrices\bin\prices");
             foreach (var subDirectories in allPrices.GetDirectories())
             {
                 foreach (var file in subDirectories.GetFiles())
                 {
-                    if ((file.Name.StartsWith("PriceFull") || file.Name.StartsWith("PricesFull")) && (file.Extension == ".gz" || file.Extension == ".zip") && !subDirectories.GetFiles(file.Name.Remove(file.Name.Length - file.Extension.Length)).Any())
+                    if ((file.Name.StartsWith("PriceFull") || file.Name.StartsWith("PricesFull")) && (file.Extension == ".gz" || file.Extension == ".zip") && !subDirectories.GetFiles(file.Name.Remove(file.Name.Length - file.Extension.Length) + ".xml").Any())
                     {
                         if (file.Extension == ".gz")
                         {
@@ -29,7 +29,6 @@ namespace PriceCompareModel
                         {
                             DecompressZip(file);
                         }
-
                     }
                 }
             }
@@ -76,57 +75,77 @@ namespace PriceCompareModel
             {
                 chain curChain;
                 List<store> listOfStores = new List<store>();
+                List<item> listOfItems = new List<item>();
+                List<price> listOfPrices = new List<price>();
                 DirectoryInfo allPrices = new DirectoryInfo(@"C:\finalProject_PriceCompare\AllPrices\bin\prices");
                 allPrices.GetDirectories();
                 foreach (var subDirectory in allPrices.GetDirectories())
                 {
+                    DecompressAllFiles();
 
-                    DecompressAll();
+                    if (subDirectory.Name == "logs" )
+                    {
+                        continue;
+                    }
 
-                    //if (subDirectory.Name == "logs" || subDirectory.Name == "mega" || subDirectory.Name == "shufersal")
-                    //{
-                    //    continue;
-                    //}
+                    string StoreFilePath = subDirectory.GetFiles().Where(t => t.Name.StartsWith("Stores")).Single().FullName;
+                    XDocument storesDoc = XDocument.Load(StoreFilePath);
 
-                    //string StoreFilePath = subDirectory.GetFiles().Where(t => t.Name.StartsWith("Stores")).Single().FullName;
-                    //XDocument storesDoc = XDocument.Load(StoreFilePath);
+                    curChain = ChainToDB(storesDoc, context);
+                    chain existingChain = context.chains.FirstOrDefault(c => c.chain_id == curChain.chain_id);
+                    context.SaveChanges();
 
-                    //curChain = AddChainToDB(storesDoc, context);
-                    //chain existingChain = context.chains.FirstOrDefault(c => c.chain_id == curChain.chain_id);
-                    // context.SaveChanges();
+                    if (existingChain == null)
+                    {
+                        context.chains.Add(curChain);
+                    }
 
-                    //if (existingChain == null)
-                    //{
-                    //    context.chains.Add(curChain);
-                    //}
+                    listOfStores = StoresToDB(storesDoc, context, curChain);
+                    listOfStores.ForEach(s =>
+                    {
+                        context.stores.Add(s);
+                        context.SaveChanges();
+                    });
 
-                    //listOfStores = AddStoresToDB(storesDoc, context, curChain);
-                    //var x = listOfStores.Where(a => a.store_id == 0).Any();
-                    //listOfStores.ForEach(s => {
-                    //    context.stores.Add(s);
-                    //    context.SaveChanges();
-                    //}
-                    //    );
-                
-                   
-                    //foreach (var file in subDirectory.GetFiles("*.xml"))
-                    //{
-                    //    XmlToDB(file, context);
-                    //}
+                    FileInfo[] priceFullXmlFiles = subDirectory.GetFiles("PriceFull*.xml");
+                    foreach (var file in priceFullXmlFiles)
+                    {
+                        listOfItems = ItemsToDB(file, context);
+                        foreach (item item in listOfItems)
+                        {
+                            var existingItem = context.items.FirstOrDefault(i => i.item_code == item.item_code);
+                            if (existingItem == null)
+                            {
+                                context.items.Add(item);
+                                context.SaveChanges();
+                            }
+
+                        }
+                    }
+
+                    foreach (var file in priceFullXmlFiles)
+                    {
+                        listOfPrices = PricesToDB(file, context);
+                        foreach (price price in listOfPrices)
+                        {
+                            var existingPrice = context.prices.FirstOrDefault(p => p.item_code == price.item_code && p.store_key == price.store_key);
+                            if (existingPrice == null)
+                            {
+                                context.prices.Add(price);
+                                context.SaveChanges();
+                            }
+                        }
+                    }
                 }
-
-                //context.SaveChanges();
             }
         }
-
-       
-
-        public chain AddChainToDB(XDocument storesDoc, PriceCompareDBEntitie context)
+    
+        private chain ChainToDB(XDocument storesDoc, PriceCompareDBEntitie context)
         {
             XElement root = storesDoc.Root;
             chain chain = new chain();
-            long chain_id;
 
+            long chain_id;
             long.TryParse(root.Element("ChainId").Value, out chain_id);
             chain.chain_id = chain_id;
             chain.chain_name = root.Element("ChainName").Value;
@@ -134,19 +153,18 @@ namespace PriceCompareModel
             return chain;
         }
 
-        private List<store> AddStoresToDB(XDocument storesDoc, PriceCompareDBEntitie context, chain chain)
+        private List<store> StoresToDB(XDocument storesDoc, PriceCompareDBEntitie context, chain chain)
         {
             List<store> listOfStores = new List<store>();
             XElement StoresElm = storesDoc.Root.Element("SubChains").Element("SubChain").Element("Stores");
             int store_id;
-            
+
             foreach (var Store in StoresElm.Elements("Store"))
             {
                 store store = new store();
                 int.TryParse(Store.Element("StoreId").Value, out store_id);
                 //int.TryParse(Store.Element("StoreType").Value, out store_type);
                 store.store_id = store_id;
-               // store.chain = chain;
                 store.chain_id = chain.chain_id;
                 store.store_type = null;
                 store.store_name = Store.Element("StoreName").Value;
@@ -161,7 +179,6 @@ namespace PriceCompareModel
                 }
                 else
                 {
-                    // existingStore.chain = chain;
                     existingStore.chain_id = chain.chain_id;
                     existingStore.store_type = null;
                     existingStore.store_name = Store.Element("StoreName").Value;
@@ -169,30 +186,82 @@ namespace PriceCompareModel
                     existingStore.city = Store.Element("City").Value;
                 }
             }
+
             return listOfStores;
         }
 
-        //public void XmlToDB(FileInfo xmlFile , PriceCompareDBEntitie context)
-        //{
-        //    XDocument doc = XDocument.Load(xmlFile.FullName);
-           
-        //    foreach (XElement itemElement in doc.Root.Element("Items").Elements("Item"))
-        //    {
-        //        item item = new item();
-        //        item.item_code = itemElement.Element("ItemCode").Value;
-        //        item.item_type = itemElement.Element("ItemType").Value;
-        //        item.item_name = itemElement.Element("ItemName").Value;
-        //        item.manufacturer_name = itemElement.Element("ManufacturerName").Value;
-        //        item.manufacturer_item_description = itemElement.Element("ManufacturerItemDescription").Value;
-        //        item.unit_quantity = itemElement.Element("UnitQty").Value;
-        //        item.quantity_in_package = itemElement.Element("Quantity").Value;
-        //        context.items.Add(item);
+        private List<item> ItemsToDB(FileInfo xmlFile, PriceCompareDBEntitie context)
+        {
+            XDocument doc = XDocument.Load(xmlFile.FullName);
+            List<item> listOfItems = new List<item>();
+            long item_code;
 
-        //    }
-            
+            foreach (XElement itemElement in doc.Root.Element("Items").Elements("Item"))
+            {
+                item item = new item();
+                long.TryParse(itemElement.Element("ItemCode").Value, out item_code);
+                item.item_code = item_code;
+                item.item_type = itemElement.Element("ItemType").Value;
+                item.item_name = itemElement.Element("ItemName").Value;
+                item.manufacturer_name = itemElement.Element("ManufacturerName").Value;
+                item.manufacturer_item_description = itemElement.Element("ManufacturerItemDescription").Value;
+                item.unit_quantity = itemElement.Element("UnitQty").Value;
+                item.quantity_in_package = itemElement.Element("Quantity").Value;
 
-        //}
+                var existingItem = context.items.FirstOrDefault(i => i.item_code == item.item_code);
+                if (existingItem == null )
+                {
+                    if (item_code > 999999999)
+                    {
+                        listOfItems.Add(item);
+                    }
+                }
+                else
+                {
+                    existingItem.item_type = itemElement.Element("ItemType").Value;
+                    existingItem.item_name = itemElement.Element("ItemName").Value;
+                    existingItem.manufacturer_name = itemElement.Element("ManufacturerName").Value;
+                    existingItem.manufacturer_item_description = itemElement.Element("ManufacturerItemDescription").Value;
+                    existingItem.unit_quantity = itemElement.Element("UnitQty").Value;
+                    existingItem.quantity_in_package = itemElement.Element("Quantity").Value;
+                }
+            }
 
+            return listOfItems;
+        }
 
+        private List<price> PricesToDB(FileInfo xmlFile, PriceCompareDBEntitie context)
+        {
+            XDocument doc = XDocument.Load(xmlFile.FullName);
+            List<price> listOfPrices = new List<price>();
+            long chain_id;
+            long item_code;
+            int store_id;
+            float priceOfItem;
+
+            foreach (XElement itemElement in doc.Root.Element("Items").Elements("Item"))
+            {
+                long.TryParse(itemElement.Element("ItemCode").Value, out item_code);
+                long.TryParse(doc.Root.Element("ChainId").Value, out chain_id);
+                var existingItem = context.items.FirstOrDefault(i => i.item_code == item_code );
+                if (existingItem != null)
+                {
+                    price price = new price();
+                    price.item_code = existingItem.item_code;
+                    int.TryParse(doc.Root.Element("StoreId").Value, out store_id);
+                    var existingStore = context.stores.FirstOrDefault(s => s.store_id == store_id && s.chain_id == chain_id);
+                    price.store_key = existingStore.store_key;
+                    float.TryParse(itemElement.Element("ItemPrice").Value, out priceOfItem);
+                    price.price1 = priceOfItem;
+                    //var existingPrice = context.prices.FirstOrDefault(p => p.item_code == price.item_code &&  p.store_key == price.store_key);
+                    //if (existingPrice == null)
+                    //{
+                        listOfPrices.Add(price);
+                    //}
+                }
+            }
+
+            return listOfPrices;
+        }
     }
 }

@@ -20,17 +20,14 @@ namespace PriceCompareModel
             this.prices = new HashSet<price>();
         }
     
-        public int item_id { get; set; }
+        public long item_code { get; set; }
         public string item_type { get; set; }
-        public string item_code { get; set; }
-        public long chain_id { get; set; }
         public string item_name { get; set; }
         public string manufacturer_name { get; set; }
         public string manufacturer_item_description { get; set; }
         public string unit_quantity { get; set; }
         public string quantity_in_package { get; set; }
     
-        public virtual chain chain { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<price> prices { get; set; }
     }

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PriceCompareUI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="417.34" Width="913.8">
+        Title="MainWindow" Height="617.34" Width="713.8">
     <Grid>
         
     </Grid>

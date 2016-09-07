@@ -4,15 +4,14 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="30075bb930df446ab836e59a161b9c2d" Name="Diagram1">
-        <EntityTypeShape EntityType="PriceCompareDBModel.chain" Width="1.5" PointX="0.75" PointY="3.625" />
-        <EntityTypeShape EntityType="PriceCompareDBModel.item" Width="1.5" PointX="3" PointY="1.125" />
-        <EntityTypeShape EntityType="PriceCompareDBModel.price" Width="1.5" PointX="5.25" PointY="3.375" />
-        <EntityTypeShape EntityType="PriceCompareDBModel.store" Width="1.5" PointX="3" PointY="5" />
-        <AssociationConnector Association="PriceCompareDBModel.FK_items_ToTable" />
-        <AssociationConnector Association="PriceCompareDBModel.FK_stores_ToTable" />
-        <AssociationConnector Association="PriceCompareDBModel.FK_prices_ToTable_1" />
-        <AssociationConnector Association="PriceCompareDBModel.FK_prices_ToTable" />
+      <Diagram DiagramId="12054b86650c43088d8afa597f67d039" Name="Diagram1">
+        <EntityTypeShape EntityType="PriceCompareDBModel.chain" Width="1.5" PointX="0.75" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PriceCompareDBModel.item" Width="1.5" PointX="3" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PriceCompareDBModel.price" Width="1.5" PointX="5.25" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="PriceCompareDBModel.store" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <AssociationConnector Association="PriceCompareDBModel.FK_stores_ToTable" ManuallyRouted="false" />
+        <AssociationConnector Association="PriceCompareDBModel.FK_prices_ToTable" ManuallyRouted="false" />
+        <AssociationConnector Association="PriceCompareDBModel.FK_prices_ToTable_1" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -95,6 +95,7 @@
       <DependentUpon>PriceCompareModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ShoppingCart.cs" />
     <Compile Include="store.cs">
       <DependentUpon>PriceCompareModel.tt</DependentUpon>
     </Compile>

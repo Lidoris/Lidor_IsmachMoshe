@@ -14,10 +14,9 @@ namespace PriceCompareModel
     
     public partial class price
     {
-        public int item_id { get; set; }
+        public long item_code { get; set; }
         public int store_key { get; set; }
-        public Nullable<float> price1 { get; set; }
-        public string unit_of_measure { get; set; }
+        public float price1 { get; set; }
     
         public virtual item item { get; set; }
         public virtual store store { get; set; }

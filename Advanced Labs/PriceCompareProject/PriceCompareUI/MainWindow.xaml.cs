@@ -25,10 +25,7 @@ namespace PriceCompareUI
         {
             InitializeComponent();
             DBManager manager = new DBManager();
-            //manager.DecompressAll();
             manager.PopulateDB();
-
-
         }
     }
 }
