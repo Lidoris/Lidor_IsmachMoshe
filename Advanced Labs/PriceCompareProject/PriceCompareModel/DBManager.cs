@@ -7,11 +7,37 @@ using System.Xml;
 using System.IO;
 using System.IO.Compression;
 using System.Xml.Linq;
+using System.Collections;
 
 namespace PriceCompareModel
 {
     public class DBManager
     {
+        public PriceCompareDBEntitie _context;
+
+        public DBManager()
+        {
+            _context = new PriceCompareDBEntitie();
+        }
+        
+        public List<item> GetItems()
+        {
+            return _context.items.ToList();
+        }
+
+        public List<chain> GetChains()
+        {
+            return _context.chains.ToList();
+        }
+        public List<price> GetPrices()
+        {
+            return _context.prices.ToList();
+        }
+        public List<store> GetStores()
+        {
+            return _context.stores.ToList();
+        }
+
         public void DecompressAllFiles()
         {
             DirectoryInfo allPrices = new DirectoryInfo(@"C:\finalProject_PriceCompare\AllPrices\bin\prices");
@@ -71,8 +97,8 @@ namespace PriceCompareModel
 
         public void PopulateDB()
         {
-            using (PriceCompareDBEntitie context = new PriceCompareDBEntitie())
-            {
+           // using (PriceCompareDBEntitie context = new PriceCompareDBEntitie())
+            //{
                 chain curChain;
                 List<store> listOfStores = new List<store>();
                 List<item> listOfItems = new List<item>();
@@ -91,33 +117,33 @@ namespace PriceCompareModel
                     string StoreFilePath = subDirectory.GetFiles().Where(t => t.Name.StartsWith("Stores")).Single().FullName;
                     XDocument storesDoc = XDocument.Load(StoreFilePath);
 
-                    curChain = ChainToDB(storesDoc, context);
-                    chain existingChain = context.chains.FirstOrDefault(c => c.chain_id == curChain.chain_id);
-                    context.SaveChanges();
+                    curChain = ChainToDB(storesDoc, _context);
+                    chain existingChain = _context.chains.FirstOrDefault(c => c.chain_id == curChain.chain_id);
+                    _context.SaveChanges();
 
                     if (existingChain == null)
                     {
-                        context.chains.Add(curChain);
+                        _context.chains.Add(curChain);
                     }
 
-                    listOfStores = StoresToDB(storesDoc, context, curChain);
+                    listOfStores = StoresToDB(storesDoc, _context, curChain);
                     listOfStores.ForEach(s =>
                     {
-                        context.stores.Add(s);
-                        context.SaveChanges();
+                        _context.stores.Add(s);
+                        _context.SaveChanges();
                     });
 
                     FileInfo[] priceFullXmlFiles = subDirectory.GetFiles("PriceFull*.xml");
                     foreach (var file in priceFullXmlFiles)
                     {
-                        listOfItems = ItemsToDB(file, context);
+                        listOfItems = ItemsToDB(file, _context);
                         foreach (item item in listOfItems)
                         {
-                            var existingItem = context.items.FirstOrDefault(i => i.item_code == item.item_code);
+                            var existingItem = _context.items.FirstOrDefault(i => i.item_code == item.item_code);
                             if (existingItem == null)
                             {
-                                context.items.Add(item);
-                                context.SaveChanges();
+                                _context.items.Add(item);
+                                _context.SaveChanges();
                             }
 
                         }
@@ -125,18 +151,18 @@ namespace PriceCompareModel
 
                     foreach (var file in priceFullXmlFiles)
                     {
-                        listOfPrices = PricesToDB(file, context);
+                        listOfPrices = PricesToDB(file, _context);
                         foreach (price price in listOfPrices)
                         {
-                            var existingPrice = context.prices.FirstOrDefault(p => p.item_code == price.item_code && p.store_key == price.store_key);
+                            var existingPrice = _context.prices.FirstOrDefault(p => p.item_code == price.item_code && p.store_key == price.store_key);
                             if (existingPrice == null)
                             {
-                                context.prices.Add(price);
-                                context.SaveChanges();
+                                _context.prices.Add(price);
+                                _context.SaveChanges();
                             }
                         }
-                    }
-                }
+                   // }
+               }
             }
         }
     
@@ -211,10 +237,7 @@ namespace PriceCompareModel
                 var existingItem = context.items.FirstOrDefault(i => i.item_code == item.item_code);
                 if (existingItem == null )
                 {
-                    if (item_code > 999999999)
-                    {
-                        listOfItems.Add(item);
-                    }
+                    listOfItems.Add(item);
                 }
                 else
                 {

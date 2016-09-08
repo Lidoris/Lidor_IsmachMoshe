@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace PriceCompareUI.Properties
+namespace UI.Properties
 {
 
 

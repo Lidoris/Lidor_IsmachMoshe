@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PriceCompareModel", "PriceCompareModel\PriceCompareModel.csproj", "{2E1A4EA2-D738-40CC-9F13-A55048740477}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PriceCompareWinFormsUI", "PriceCompareWinFormsUI\PriceCompareWinFormsUI.csproj", "{5DC7871C-00C9-4678-B154-78D7C6B6AD2B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI", "UI\UI.csproj", "{18152080-448D-43FC-83A7-B07D52C5D189}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{2E1A4EA2-D738-40CC-9F13-A55048740477}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E1A4EA2-D738-40CC-9F13-A55048740477}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2E1A4EA2-D738-40CC-9F13-A55048740477}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5DC7871C-00C9-4678-B154-78D7C6B6AD2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5DC7871C-00C9-4678-B154-78D7C6B6AD2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5DC7871C-00C9-4678-B154-78D7C6B6AD2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5DC7871C-00C9-4678-B154-78D7C6B6AD2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18152080-448D-43FC-83A7-B07D52C5D189}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18152080-448D-43FC-83A7-B07D52C5D189}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18152080-448D-43FC-83A7-B07D52C5D189}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18152080-448D-43FC-83A7-B07D52C5D189}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

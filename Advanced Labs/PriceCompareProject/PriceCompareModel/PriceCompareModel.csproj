@@ -73,9 +73,11 @@
       <DependentUpon>PriceCompareModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DBManager.cs" />
+    <Compile Include="MinMaxExtension.cs" />
     <Compile Include="item.cs">
       <DependentUpon>PriceCompareModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="ModelManagement.cs" />
     <Compile Include="price.cs">
       <DependentUpon>PriceCompareModel.tt</DependentUpon>
     </Compile>
