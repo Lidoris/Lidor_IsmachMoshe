@@ -13,9 +13,12 @@ namespace PriceCompareModel
             price minPrice = listOfPrices[0];
             foreach (var price in listOfPrices)
             {
-                if (price.price1 < minPrice.price1)
+                if (price != null)
                 {
-                    minPrice = price;
+                    if (price.price1 < minPrice.price1)
+                    {
+                        minPrice = price;
+                    }
                 }
             }
 
@@ -24,12 +27,17 @@ namespace PriceCompareModel
 
         static public price Maximum (this List<price> listOfPrices)
         {
-            price maxPrice = listOfPrices[0];
+            float max = 0;
+            price maxPrice = null;
             foreach (var price in listOfPrices)
             {
-                if (price.price1 > maxPrice.price1)
+                if (price != null)
                 {
-                    maxPrice = price;
+                    if (price.price1 > max)
+                    {
+                        max = price.price1;
+                        maxPrice = price;
+                    }
                 }
             }
 

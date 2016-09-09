@@ -40,8 +40,8 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.panel1 = new System.Windows.Forms.Panel();
             this.deleteItemButton = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.bestChainLabel = new System.Windows.Forms.Label();
+            this.flowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -180,29 +180,25 @@
             this.deleteItemButton.UseVisualStyleBackColor = false;
             this.deleteItemButton.Click += new System.EventHandler(this.deleteItemButton_Click);
             // 
-            // label2
+            // bestChainLabel
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Arial", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.label2.ForeColor = System.Drawing.Color.OliveDrab;
-            this.label2.Location = new System.Drawing.Point(391, 317);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(34, 39);
-            this.label2.TabIndex = 14;
-            this.label2.Text = "v";
+            this.bestChainLabel.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.bestChainLabel.AutoSize = true;
+            this.bestChainLabel.Font = new System.Drawing.Font("Arial", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
+            this.bestChainLabel.ForeColor = System.Drawing.Color.OliveDrab;
+            this.bestChainLabel.Location = new System.Drawing.Point(412, 308);
+            this.bestChainLabel.Name = "bestChainLabel";
+            this.bestChainLabel.Size = new System.Drawing.Size(32, 38);
+            this.bestChainLabel.TabIndex = 14;
+            this.bestChainLabel.Text = "v";
+            this.bestChainLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // tableLayoutPanel
+            // flowLayoutPanel
             // 
-            this.tableLayoutPanel.ColumnCount = 2;
-            this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60.08316F));
-            this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 39.91684F));
-            this.tableLayoutPanel.Location = new System.Drawing.Point(194, 403);
-            this.tableLayoutPanel.Name = "tableLayoutPanel";
-            this.tableLayoutPanel.RowCount = 2;
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel.Size = new System.Drawing.Size(457, 67);
-            this.tableLayoutPanel.TabIndex = 15;
+            this.flowLayoutPanel.Location = new System.Drawing.Point(301, 358);
+            this.flowLayoutPanel.Name = "flowLayoutPanel";
+            this.flowLayoutPanel.Size = new System.Drawing.Size(236, 195);
+            this.flowLayoutPanel.TabIndex = 16;
             // 
             // MainForm
             // 
@@ -210,8 +206,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(845, 699);
-            this.Controls.Add(this.tableLayoutPanel);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.flowLayoutPanel);
+            this.Controls.Add(this.bestChainLabel);
             this.Controls.Add(this.deleteItemButton);
             this.Controls.Add(this.CompareButton);
             this.Controls.Add(this.resetShoppingCartButton);
@@ -242,8 +238,8 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button deleteItemButton;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel;
+        private System.Windows.Forms.Label bestChainLabel;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel;
     }
 }
 

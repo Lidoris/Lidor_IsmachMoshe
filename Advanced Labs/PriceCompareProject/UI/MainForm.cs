@@ -47,17 +47,30 @@ namespace UI
         private void CompareButton_Click(object sender, EventArgs e)
         {
             _model.FindTheMinPricesForAllChains();
-            //DisplayCartForChain()
+            chain bestRankChain = _model.FindBestRank();
+            bestChainLabel.Text = "הרשת המשתלמת ביותר לסל זה היא " + bestRankChain.chain_name;
+            
+            DisplayCartForChain(bestRankChain);
 
         }
+
+        
         private void DisplayCartForChain(chain chain)
         {
+            List<Label> labels = new List<Label>();
+
             foreach (var item in _model._shoppingCart.selectedItems)
             {
-                Label itemLabel = new Label();
-                Label priceLabel = new Label();
+                labels.Add( new Label());
+                labels.Last().Text = item.item_name;
+                flowLayoutPanel.Controls.Add(labels.Last());
+                labels.Add(new Label());
+                labels.Last().Text = _model.FindMinPriceForItemAndChain(item, chain).price1 + "שח ";
+               
+                flowLayoutPanel.Controls.Add(labels.Last());
+                
 
-                tableLayoutPanel.RowCount = 4;
+
             }
         }
 
