@@ -46,24 +46,31 @@ namespace UI
 
         private void CompareButton_Click(object sender, EventArgs e)
         {
-            _model.FindTheMinPricesForAllChains();
-            chain bestRankChain = _model.FindBestRank();
-            if (bestRankChain != null)
+            if (!_model._shoppingCart.selectedItems.Any())
             {
-                bestChainLabel.Text = "הרשת המשתלמת ביותר לסל זה היא " + bestRankChain.chain_name;
+                MessageBox.Show("נא הכנס פריטים לסל לצורך החישוב");
             }
             else
             {
-                bestChainLabel.Text = "לא נמצאה רשת מומלצת לסל קניות זה";
-                bestChainLabel.ForeColor = Color.Red;
+                _model.FindTheMinPricesForAllChains();
+                chain bestRankChain = _model.FindBestRank();
+                if (bestRankChain != null)
+                {
+                    bestChainLabel.Text = "הרשת המשתלמת ביותר לסל זה היא " + bestRankChain.chain_name;
+                }
+                else
+                {
+                    bestChainLabel.Text = "לא נמצאה רשת מומלצת לסל קניות זה";
+                    bestChainLabel.ForeColor = Color.Red;
 
+                }
+
+                this.Height = 650;
+                CreateResultTabControl();
             }
-           
-            this.Height = 650;
-            
-            CreateResultTabControl();
-
         }
+
+        
         
         private void itemsComboBox_TextUpdate(object sender, EventArgs e)
         {
@@ -119,17 +126,48 @@ namespace UI
 
         private void CreateResultTabControl()
         {
+            Label totalCartPriceLabel;
+            List<item> missingItems;
             resultTabControl.Controls.Clear();
+
             foreach (var chain in _model._dbManager.GetChains())
             {
-                resultTabControl.Controls.Add(new TabPage() { Name = chain.chain_name, Text = chain.chain_name });
-                
+                totalCartPriceLabel = new Label();
+                resultTabControl.Controls.Add(new TabPage() { Name = chain.chain_name, Text = chain.chain_name, RightToLeft = RightToLeft.Yes });
+
                 var dataGridView = new DataGridView() { DataSource = _model._minPricesForAllChains[chain.chain_id] };
-                dataGridView.Width = resultTabControl.Width - 5;
+                dataGridView.Width = resultTabControl.Width - 10;
                 dataGridView.Height = resultTabControl.Height - 100;
                 dataGridView.DataBindingComplete += dataGridView_DataBindingComplete;
                 resultTabControl.Controls[chain.chain_name].Controls.Add(dataGridView);
-                
+
+                missingItems = _model.FindMissingItemsInCart(chain);
+                if (missingItems.Count > 0)
+                {
+                    Label missingItemsLabel = new Label();
+
+                    StringBuilder builder = new StringBuilder(" שים לב! ישנם מוצרים החסרים בסל זה : ");
+                    foreach (var item in missingItems)
+                    {
+                        builder.Append(item.item_name + " ");
+                    }
+
+                    missingItemsLabel.Text = builder.ToString();
+                    resultTabControl.Controls[chain.chain_name].Controls.Add(missingItemsLabel);
+                    missingItemsLabel.Top = dataGridView.Height;
+                    missingItemsLabel.AutoSize = true;
+                    missingItemsLabel.Left = dataGridView.Right - missingItemsLabel.Width;
+
+                }
+
+                totalCartPriceLabel.Text = "מחיר סופי : " + _model.TotalCartPrice(chain) + " שח ";
+                resultTabControl.Controls[chain.chain_name].Controls.Add(totalCartPriceLabel);
+                totalCartPriceLabel.Top = 180;
+                totalCartPriceLabel.AutoSize = true;
+                totalCartPriceLabel.Font = new Font("Arial", 14F);
+
+
+
             }
             
 

@@ -9,10 +9,10 @@ namespace PriceCompareModel
 {
     public class ModelManagement
     {
-        public DBManager _dbManager = new DBManager();
-        public ShoppingCart _shoppingCart = new ShoppingCart();
-        public Dictionary<long, List<price>> _minPricesForAllChains = new Dictionary<long, List<price>>(); // לשנות הרשאות גישה
-        public Dictionary<long, float> _chainRank = new Dictionary<long, float>();
+        public DBManager _dbManager { get; private set; } = new DBManager();
+        public ShoppingCart _shoppingCart { get; private set; } = new ShoppingCart();
+        public Dictionary<long, List<price>> _minPricesForAllChains { get; private set; } = new Dictionary<long, List<price>>();
+        public Dictionary<long, float> _chainRank { get; private set; } = new Dictionary<long, float>();
 
         public price FindMinPriceForItemAndChain(item item, chain chain)
         {
@@ -124,9 +124,29 @@ namespace PriceCompareModel
             return _dbManager.GetChains().Find(c => c.chain_id == bestRankChain);
         }
 
-        public List<item> FindMissingItemsInCart( chain chain)
+        public List<item> FindMissingItemsInCart(chain chain)
         {
+            List<item> listOfMissingItems = new List<item>();
+            foreach (var item in _shoppingCart.selectedItems)
+            {
+                if (_minPricesForAllChains[chain.chain_id].Find(x=> x.item_code == item.item_code)== null)
+                {
+                    listOfMissingItems.Add(item);
+                }
+            }
 
+            return listOfMissingItems;
+        }
+
+        public float TotalCartPrice(chain chain)
+        {
+            float sum = 0;
+            foreach (var price in _minPricesForAllChains[chain.chain_id])
+            {
+                sum += price.price1;
+            }
+
+            return sum;
         }
     }
 }

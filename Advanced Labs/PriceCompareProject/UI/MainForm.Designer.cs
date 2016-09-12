@@ -43,8 +43,8 @@
             this.bestChainLabel = new System.Windows.Forms.Label();
             this.detailsItemGroupBox = new System.Windows.Forms.GroupBox();
             this.detailsItemListBox = new System.Windows.Forms.ListBox();
-            this.modelManagementBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.resultTabControl = new System.Windows.Forms.TabControl();
+            this.modelManagementBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.panel1.SuspendLayout();
             this.detailsItemGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.modelManagementBindingSource)).BeginInit();
@@ -54,10 +54,10 @@
             // 
             this.AddItemButton.BackColor = System.Drawing.SystemColors.HighlightText;
             this.AddItemButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.AddItemButton.Location = new System.Drawing.Point(133, 28);
+            this.AddItemButton.Location = new System.Drawing.Point(126, 62);
             this.AddItemButton.Margin = new System.Windows.Forms.Padding(4);
             this.AddItemButton.Name = "AddItemButton";
-            this.AddItemButton.Size = new System.Drawing.Size(112, 29);
+            this.AddItemButton.Size = new System.Drawing.Size(149, 29);
             this.AddItemButton.TabIndex = 1;
             this.AddItemButton.Text = "הוסף פריט לסל";
             this.AddItemButton.UseVisualStyleBackColor = false;
@@ -91,7 +91,7 @@
             // itemsComboBox
             // 
             this.itemsComboBox.FormattingEnabled = true;
-            this.itemsComboBox.Location = new System.Drawing.Point(550, 25);
+            this.itemsComboBox.Location = new System.Drawing.Point(557, 62);
             this.itemsComboBox.Margin = new System.Windows.Forms.Padding(4);
             this.itemsComboBox.Name = "itemsComboBox";
             this.itemsComboBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
@@ -104,7 +104,7 @@
             // 
             this.chooseItemLabel.AutoSize = true;
             this.chooseItemLabel.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.chooseItemLabel.Location = new System.Drawing.Point(758, 27);
+            this.chooseItemLabel.Location = new System.Drawing.Point(765, 64);
             this.chooseItemLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.chooseItemLabel.Name = "chooseItemLabel";
             this.chooseItemLabel.Size = new System.Drawing.Size(78, 19);
@@ -115,7 +115,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.label1.Location = new System.Drawing.Point(463, 28);
+            this.label1.Location = new System.Drawing.Point(470, 65);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(79, 19);
@@ -135,7 +135,7 @@
             "7",
             "8",
             "9"});
-            this.amountComboBox.Location = new System.Drawing.Point(391, 26);
+            this.amountComboBox.Location = new System.Drawing.Point(398, 63);
             this.amountComboBox.Margin = new System.Windows.Forms.Padding(4);
             this.amountComboBox.Name = "amountComboBox";
             this.amountComboBox.Size = new System.Drawing.Size(64, 25);
@@ -146,10 +146,10 @@
             // 
             this.resetShoppingCartButton.BackColor = System.Drawing.SystemColors.HighlightText;
             this.resetShoppingCartButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.resetShoppingCartButton.Location = new System.Drawing.Point(17, 28);
+            this.resetShoppingCartButton.Location = new System.Drawing.Point(27, 62);
             this.resetShoppingCartButton.Margin = new System.Windows.Forms.Padding(4);
             this.resetShoppingCartButton.Name = "resetShoppingCartButton";
-            this.resetShoppingCartButton.Size = new System.Drawing.Size(108, 29);
+            this.resetShoppingCartButton.Size = new System.Drawing.Size(91, 29);
             this.resetShoppingCartButton.TabIndex = 11;
             this.resetShoppingCartButton.Text = "רוקן סל קניות";
             this.resetShoppingCartButton.UseVisualStyleBackColor = false;
@@ -170,9 +170,9 @@
             this.panel1.Controls.Add(this.itemsComboBox);
             this.panel1.Controls.Add(this.resetShoppingCartButton);
             this.panel1.Controls.Add(this.chooseItemLabel);
-            this.panel1.Location = new System.Drawing.Point(-4, 12);
+            this.panel1.Location = new System.Drawing.Point(-6, 12);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(860, 62);
+            this.panel1.Size = new System.Drawing.Size(860, 106);
             this.panel1.TabIndex = 12;
             // 
             // deleteItemButton
@@ -223,10 +223,6 @@
             this.detailsItemListBox.TabIndex = 0;
             this.detailsItemListBox.Visible = false;
             // 
-            // modelManagementBindingSource
-            // 
-            this.modelManagementBindingSource.DataSource = typeof(PriceCompareModel.ModelManagement);
-            // 
             // resultTabControl
             // 
             this.resultTabControl.Location = new System.Drawing.Point(120, 338);
@@ -235,6 +231,10 @@
             this.resultTabControl.SelectedIndex = 0;
             this.resultTabControl.Size = new System.Drawing.Size(598, 250);
             this.resultTabControl.TabIndex = 19;
+            // 
+            // modelManagementBindingSource
+            // 
+            this.modelManagementBindingSource.DataSource = typeof(PriceCompareModel.ModelManagement);
             // 
             // MainForm
             // 

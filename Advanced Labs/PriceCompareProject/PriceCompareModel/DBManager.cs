@@ -97,72 +97,70 @@ namespace PriceCompareModel
 
         public void PopulateDB()
         {
-           // using (PriceCompareDBEntitie context = new PriceCompareDBEntitie())
-            //{
-                chain curChain;
-                List<store> listOfStores = new List<store>();
-                List<item> listOfItems = new List<item>();
-                List<price> listOfPrices = new List<price>();
-                DirectoryInfo allPrices = new DirectoryInfo(@"C:\finalProject_PriceCompare\AllPrices\bin\prices");
-                allPrices.GetDirectories();
-                foreach (var subDirectory in allPrices.GetDirectories())
+            chain curChain;
+            List<store> listOfStores = new List<store>();
+            List<item> listOfItems = new List<item>();
+            List<price> listOfPrices = new List<price>();
+            DirectoryInfo allPrices = new DirectoryInfo(@"C:\finalProject_PriceCompare\AllPrices\bin\prices");
+            allPrices.GetDirectories();
+            foreach (var subDirectory in allPrices.GetDirectories())
+            {
+                DecompressAllFiles();
+
+                if (subDirectory.Name == "logs")
                 {
-                    DecompressAllFiles();
+                    continue;
+                }
 
-                    if (subDirectory.Name == "logs" )
-                    {
-                        continue;
-                    }
+                string StoreFilePath = subDirectory.GetFiles().Where(t => t.Name.StartsWith("Stores")).Single().FullName;
+                XDocument storesDoc = XDocument.Load(StoreFilePath);
 
-                    string StoreFilePath = subDirectory.GetFiles().Where(t => t.Name.StartsWith("Stores")).Single().FullName;
-                    XDocument storesDoc = XDocument.Load(StoreFilePath);
+                curChain = ChainToDB(storesDoc, _context);
+                chain existingChain = _context.chains.FirstOrDefault(c => c.chain_id == curChain.chain_id);
+                _context.SaveChanges();
 
-                    curChain = ChainToDB(storesDoc, _context);
-                    chain existingChain = _context.chains.FirstOrDefault(c => c.chain_id == curChain.chain_id);
+                if (existingChain == null)
+                {
+                    _context.chains.Add(curChain);
+                }
+
+                listOfStores = StoresToDB(storesDoc, _context, curChain);
+                listOfStores.ForEach(s =>
+                {
+                    _context.stores.Add(s);
                     _context.SaveChanges();
+                });
 
-                    if (existingChain == null)
+                FileInfo[] priceFullXmlFiles = subDirectory.GetFiles("PriceFull*.xml");
+                foreach (var file in priceFullXmlFiles)
+                {
+                    listOfItems = ItemsToDB(file, _context);
+                    foreach (item item in listOfItems)
                     {
-                        _context.chains.Add(curChain);
-                    }
-
-                    listOfStores = StoresToDB(storesDoc, _context, curChain);
-                    listOfStores.ForEach(s =>
-                    {
-                        _context.stores.Add(s);
-                        _context.SaveChanges();
-                    });
-
-                    FileInfo[] priceFullXmlFiles = subDirectory.GetFiles("PriceFull*.xml");
-                    foreach (var file in priceFullXmlFiles)
-                    {
-                        listOfItems = ItemsToDB(file, _context);
-                        foreach (item item in listOfItems)
+                        var existingItem = _context.items.FirstOrDefault(i => i.item_code == item.item_code);
+                        if (existingItem == null)
                         {
-                            var existingItem = _context.items.FirstOrDefault(i => i.item_code == item.item_code);
-                            if (existingItem == null)
-                            {
-                                _context.items.Add(item);
-                                _context.SaveChanges();
-                            }
+                            _context.items.Add(item);
+                            _context.SaveChanges();
+                        }
 
+                    }
+                }
+
+                foreach (var file in priceFullXmlFiles)
+                {
+                    listOfPrices = PricesToDB(file, _context);
+                    foreach (price price in listOfPrices)
+                    {
+                        var existingPrice = _context.prices.FirstOrDefault(p => p.item_code == price.item_code && p.store_key == price.store_key);
+                        if (existingPrice == null)
+                        {
+                            _context.prices.Add(price);
+                            _context.SaveChanges();
                         }
                     }
 
-                    foreach (var file in priceFullXmlFiles)
-                    {
-                        listOfPrices = PricesToDB(file, _context);
-                        foreach (price price in listOfPrices)
-                        {
-                            var existingPrice = _context.prices.FirstOrDefault(p => p.item_code == price.item_code && p.store_key == price.store_key);
-                            if (existingPrice == null)
-                            {
-                                _context.prices.Add(price);
-                                _context.SaveChanges();
-                            }
-                        }
-                   // }
-               }
+                }
             }
         }
     
@@ -189,7 +187,6 @@ namespace PriceCompareModel
             {
                 store store = new store();
                 int.TryParse(Store.Element("StoreId").Value, out store_id);
-                //int.TryParse(Store.Element("StoreType").Value, out store_type);
                 store.store_id = store_id;
                 store.chain_id = chain.chain_id;
                 store.store_type = null;
