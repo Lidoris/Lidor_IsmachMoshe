@@ -41,18 +41,23 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.deleteItemButton = new System.Windows.Forms.Button();
             this.bestChainLabel = new System.Windows.Forms.Label();
-            this.flowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.detailsItemGroupBox = new System.Windows.Forms.GroupBox();
+            this.detailsItemListBox = new System.Windows.Forms.ListBox();
+            this.modelManagementBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.resultTabControl = new System.Windows.Forms.TabControl();
             this.panel1.SuspendLayout();
+            this.detailsItemGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.modelManagementBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // AddItemButton
             // 
             this.AddItemButton.BackColor = System.Drawing.SystemColors.HighlightText;
             this.AddItemButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.AddItemButton.Location = new System.Drawing.Point(121, 27);
+            this.AddItemButton.Location = new System.Drawing.Point(133, 28);
             this.AddItemButton.Margin = new System.Windows.Forms.Padding(4);
             this.AddItemButton.Name = "AddItemButton";
-            this.AddItemButton.Size = new System.Drawing.Size(112, 32);
+            this.AddItemButton.Size = new System.Drawing.Size(112, 29);
             this.AddItemButton.TabIndex = 1;
             this.AddItemButton.Text = "הוסף פריט לסל";
             this.AddItemButton.UseVisualStyleBackColor = false;
@@ -62,29 +67,31 @@
             // 
             this.shoppingCartListBox.FormattingEnabled = true;
             this.shoppingCartListBox.ItemHeight = 17;
-            this.shoppingCartListBox.Location = new System.Drawing.Point(218, 100);
+            this.shoppingCartListBox.Location = new System.Drawing.Point(414, 124);
             this.shoppingCartListBox.Margin = new System.Windows.Forms.Padding(4);
             this.shoppingCartListBox.Name = "shoppingCartListBox";
             this.shoppingCartListBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.shoppingCartListBox.Size = new System.Drawing.Size(409, 191);
+            this.shoppingCartListBox.Size = new System.Drawing.Size(363, 157);
             this.shoppingCartListBox.TabIndex = 2;
+            this.shoppingCartListBox.SelectedIndexChanged += new System.EventHandler(this.shoppingCartListBox_SelectedIndexChanged);
             // 
             // CompareButton
             // 
+            this.CompareButton.BackColor = System.Drawing.SystemColors.Control;
             this.CompareButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.CompareButton.Location = new System.Drawing.Point(148, 226);
+            this.CompareButton.Location = new System.Drawing.Point(298, 226);
             this.CompareButton.Margin = new System.Windows.Forms.Padding(4);
             this.CompareButton.Name = "CompareButton";
             this.CompareButton.Size = new System.Drawing.Size(108, 55);
             this.CompareButton.TabIndex = 4;
             this.CompareButton.Text = "חשב מחירים";
-            this.CompareButton.UseVisualStyleBackColor = true;
+            this.CompareButton.UseVisualStyleBackColor = false;
             this.CompareButton.Click += new System.EventHandler(this.CompareButton_Click);
             // 
             // itemsComboBox
             // 
             this.itemsComboBox.FormattingEnabled = true;
-            this.itemsComboBox.Location = new System.Drawing.Point(416, 32);
+            this.itemsComboBox.Location = new System.Drawing.Point(550, 25);
             this.itemsComboBox.Margin = new System.Windows.Forms.Padding(4);
             this.itemsComboBox.Name = "itemsComboBox";
             this.itemsComboBox.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
@@ -97,7 +104,7 @@
             // 
             this.chooseItemLabel.AutoSize = true;
             this.chooseItemLabel.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.chooseItemLabel.Location = new System.Drawing.Point(624, 34);
+            this.chooseItemLabel.Location = new System.Drawing.Point(758, 27);
             this.chooseItemLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.chooseItemLabel.Name = "chooseItemLabel";
             this.chooseItemLabel.Size = new System.Drawing.Size(78, 19);
@@ -108,7 +115,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.label1.Location = new System.Drawing.Point(313, 32);
+            this.label1.Location = new System.Drawing.Point(463, 28);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(79, 19);
@@ -128,7 +135,7 @@
             "7",
             "8",
             "9"});
-            this.amountComboBox.Location = new System.Drawing.Point(241, 30);
+            this.amountComboBox.Location = new System.Drawing.Point(391, 26);
             this.amountComboBox.Margin = new System.Windows.Forms.Padding(4);
             this.amountComboBox.Name = "amountComboBox";
             this.amountComboBox.Size = new System.Drawing.Size(64, 25);
@@ -137,9 +144,9 @@
             // 
             // resetShoppingCartButton
             // 
-            this.resetShoppingCartButton.BackColor = System.Drawing.SystemColors.Control;
+            this.resetShoppingCartButton.BackColor = System.Drawing.SystemColors.HighlightText;
             this.resetShoppingCartButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.resetShoppingCartButton.Location = new System.Drawing.Point(148, 191);
+            this.resetShoppingCartButton.Location = new System.Drawing.Point(17, 28);
             this.resetShoppingCartButton.Margin = new System.Windows.Forms.Padding(4);
             this.resetShoppingCartButton.Name = "resetShoppingCartButton";
             this.resetShoppingCartButton.Size = new System.Drawing.Size(108, 29);
@@ -161,17 +168,18 @@
             this.panel1.Controls.Add(this.amountComboBox);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.itemsComboBox);
+            this.panel1.Controls.Add(this.resetShoppingCartButton);
             this.panel1.Controls.Add(this.chooseItemLabel);
             this.panel1.Location = new System.Drawing.Point(-4, 12);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(860, 81);
+            this.panel1.Size = new System.Drawing.Size(860, 62);
             this.panel1.TabIndex = 12;
             // 
             // deleteItemButton
             // 
             this.deleteItemButton.BackColor = System.Drawing.SystemColors.Control;
             this.deleteItemButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.deleteItemButton.Location = new System.Drawing.Point(148, 154);
+            this.deleteItemButton.Location = new System.Drawing.Point(298, 189);
             this.deleteItemButton.Margin = new System.Windows.Forms.Padding(4);
             this.deleteItemButton.Name = "deleteItemButton";
             this.deleteItemButton.Size = new System.Drawing.Size(108, 29);
@@ -186,31 +194,59 @@
             this.bestChainLabel.AutoSize = true;
             this.bestChainLabel.Font = new System.Drawing.Font("Arial", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.bestChainLabel.ForeColor = System.Drawing.Color.OliveDrab;
-            this.bestChainLabel.Location = new System.Drawing.Point(412, 308);
+            this.bestChainLabel.Location = new System.Drawing.Point(244, 297);
             this.bestChainLabel.Name = "bestChainLabel";
             this.bestChainLabel.Size = new System.Drawing.Size(32, 38);
             this.bestChainLabel.TabIndex = 14;
             this.bestChainLabel.Text = "v";
             this.bestChainLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // flowLayoutPanel
+            // detailsItemGroupBox
             // 
-            this.flowLayoutPanel.Location = new System.Drawing.Point(301, 358);
-            this.flowLayoutPanel.Name = "flowLayoutPanel";
-            this.flowLayoutPanel.Size = new System.Drawing.Size(236, 195);
-            this.flowLayoutPanel.TabIndex = 16;
+            this.detailsItemGroupBox.Controls.Add(this.detailsItemListBox);
+            this.detailsItemGroupBox.Location = new System.Drawing.Point(30, 124);
+            this.detailsItemGroupBox.Name = "detailsItemGroupBox";
+            this.detailsItemGroupBox.Size = new System.Drawing.Size(261, 157);
+            this.detailsItemGroupBox.TabIndex = 17;
+            this.detailsItemGroupBox.TabStop = false;
+            this.detailsItemGroupBox.Text = "פרטי המוצר";
+            this.detailsItemGroupBox.Visible = false;
+            // 
+            // detailsItemListBox
+            // 
+            this.detailsItemListBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.detailsItemListBox.FormattingEnabled = true;
+            this.detailsItemListBox.ItemHeight = 17;
+            this.detailsItemListBox.Location = new System.Drawing.Point(6, 24);
+            this.detailsItemListBox.Name = "detailsItemListBox";
+            this.detailsItemListBox.Size = new System.Drawing.Size(249, 119);
+            this.detailsItemListBox.TabIndex = 0;
+            this.detailsItemListBox.Visible = false;
+            // 
+            // modelManagementBindingSource
+            // 
+            this.modelManagementBindingSource.DataSource = typeof(PriceCompareModel.ModelManagement);
+            // 
+            // resultTabControl
+            // 
+            this.resultTabControl.Location = new System.Drawing.Point(120, 338);
+            this.resultTabControl.Name = "resultTabControl";
+            this.resultTabControl.RightToLeftLayout = true;
+            this.resultTabControl.SelectedIndex = 0;
+            this.resultTabControl.Size = new System.Drawing.Size(598, 250);
+            this.resultTabControl.TabIndex = 19;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
-            this.ClientSize = new System.Drawing.Size(845, 699);
-            this.Controls.Add(this.flowLayoutPanel);
+            this.ClientSize = new System.Drawing.Size(845, 620);
+            this.Controls.Add(this.resultTabControl);
+            this.Controls.Add(this.detailsItemGroupBox);
             this.Controls.Add(this.bestChainLabel);
             this.Controls.Add(this.deleteItemButton);
             this.Controls.Add(this.CompareButton);
-            this.Controls.Add(this.resetShoppingCartButton);
             this.Controls.Add(this.shoppingCartListBox);
             this.Controls.Add(this.panel1);
             this.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
@@ -221,6 +257,8 @@
             this.Text = "השוואת מחירים";
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.detailsItemGroupBox.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.modelManagementBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -239,7 +277,10 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button deleteItemButton;
         private System.Windows.Forms.Label bestChainLabel;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel;
+        private System.Windows.Forms.GroupBox detailsItemGroupBox;
+        private System.Windows.Forms.ListBox detailsItemListBox;
+        private System.Windows.Forms.BindingSource modelManagementBindingSource;
+        private System.Windows.Forms.TabControl resultTabControl;
     }
 }
 

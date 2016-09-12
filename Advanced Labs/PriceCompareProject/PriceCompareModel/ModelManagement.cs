@@ -14,9 +14,20 @@ namespace PriceCompareModel
         public Dictionary<long, List<price>> _minPricesForAllChains = new Dictionary<long, List<price>>(); // לשנות הרשאות גישה
         public Dictionary<long, float> _chainRank = new Dictionary<long, float>();
 
-        public price FindMinPriceForItemAndChain(item item , chain chain)
+        public price FindMinPriceForItemAndChain(item item, chain chain)
         {
-            return _minPricesForAllChains[chain.chain_id].Find(x => x.item_code == item.item_code);
+            price minPrice; 
+            if (chain != null)
+            {
+                minPrice = _minPricesForAllChains[chain.chain_id].Find(x => x.item_code == item.item_code);
+
+            }
+            else
+            {
+                minPrice = null;
+            }
+
+            return minPrice;
         }
 
         public List<price> GetMinimumPricesForChian(chain chain)
@@ -26,9 +37,11 @@ namespace PriceCompareModel
         
         public void FindTheMinPricesForAllChains() //1
         {
+            List<price> allPricesForCurChain;
+
             _minPricesForAllChains.Clear();
             _chainRank.Clear();
-            List<price> allPricesForCurChain;
+            
             foreach (var chain in _dbManager.GetChains())
             {
                 _minPricesForAllChains.Add(chain.chain_id, new List<price>());
@@ -75,25 +88,20 @@ namespace PriceCompareModel
 
             foreach (var pair in _minPricesForAllChains)
             {
-                pricesForItem.Add(pair.Value.Find(x => x.item_code == item.item_code));
-
+                price price = pair.Value.Find(x => x.item_code == item.item_code);
+                if (price != null)
+                {
+                    pricesForItem.Add(price);
+                }
              }
 
             price maxPrice = pricesForItem.Maximum();
 
             foreach (var chain in _dbManager.GetChains())
             {
-                price minPrice;
-                try
-                {
-                    minPrice = pricesForItem.Find(x => x.store.chain_id == chain.chain_id);
-                }
-                catch (NullReferenceException e)
-                {
-                    minPrice = null;
-                }
-
-                if (minPrice != null) 
+                price curPrice = pricesForItem.Find(x => x.store.chain_id == chain.chain_id);
+                
+                if (curPrice != null) 
                 {
                     _chainRank[chain.chain_id] += (maxPrice.price1 - pricesForItem.Find(x => x.store.chain_id == chain.chain_id).price1);
                 }
@@ -116,5 +124,9 @@ namespace PriceCompareModel
             return _dbManager.GetChains().Find(c => c.chain_id == bestRankChain);
         }
 
+        public List<item> FindMissingItemsInCart( chain chain)
+        {
+
+        }
     }
 }
