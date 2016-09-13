@@ -13,17 +13,14 @@ namespace UI
 {
     public partial class MainForm : Form
     {
-        ModelManagement _model = new ModelManagement();
+        public ModelManagement _model { get; private set; } = new ModelManagement();
         
         public MainForm()
         {
             InitializeComponent();
-
-            //_model._dbManager.PopulateDB();
-           
+            //_model._dbManager.PopulateDB(); // to insert or update the DB need to uncomment this row
             itemsComboBox.DataSource = _model._dbManager.GetItems();
             shoppingCartListBox.DataSource = _model._shoppingCart.selectedItems;
-            
         }
 
         private void AddItemButton_Click(object sender, EventArgs e)
@@ -65,8 +62,6 @@ namespace UI
                 CreateResultTabControl();
             }
         }
-
-        
         
         private void itemsComboBox_TextUpdate(object sender, EventArgs e)
         {
@@ -121,7 +116,7 @@ namespace UI
         private void CreateResultTabControl()
         {
             Label totalCartPriceLabel;
-            List<item> missingItems;
+            List<string> missingItems;
             resultTabControl.Controls.Clear();
 
             foreach (var chain in _model._dbManager.GetChains())
@@ -141,10 +136,8 @@ namespace UI
                     Label missingItemsLabel = new Label();
 
                     StringBuilder builder = new StringBuilder(" שים לב! ישנם מוצרים החסרים בסל זה : ");
-                    foreach (var item in missingItems)
-                    {
-                        builder.Append(item.item_name + " ");
-                    }
+                    builder.Append(string.Join(", ", missingItems));
+                    
 
                     missingItemsLabel.Text = builder.ToString();
                     resultTabControl.Controls[chain.chain_name].Controls.Add(missingItemsLabel);

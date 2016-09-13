@@ -17,10 +17,10 @@ namespace PriceCompareModel
         public price FindMinPriceForItemAndChain(item item, chain chain)
         {
             price minPrice; 
+
             if (chain != null)
             {
                 minPrice = _minPricesForAllChains[chain.chain_id].Find(x => x.item_code == item.item_code);
-
             }
             else
             {
@@ -70,7 +70,7 @@ namespace PriceCompareModel
             }
         }
 
-        public void InitChainRank()
+        public void InitChainRank() 
         {
             foreach(var chain in _dbManager.GetChains())
             {
@@ -78,7 +78,7 @@ namespace PriceCompareModel
             }
         }
 
-        public void UpdateChainRank(item item) 
+        public void UpdateChainRank(item item) // Chain Rank helps us decide which chain is the best
         {
             List<price> pricesForItem = new List<price>();
 
@@ -120,16 +120,16 @@ namespace PriceCompareModel
             return _dbManager.GetChains().Find(c => c.chain_id == bestRankChain);
         }
 
-        public List<item> FindMissingItemsInCart(chain chain)
+        public List<string> FindMissingItemsInCart(chain chain)
         {
-            List<item> listOfMissingItems = new List<item>();
+            List<string> listOfMissingItems = new List<string>();
             foreach (var item in _shoppingCart.selectedItems)
             {
                 if (_minPricesForAllChains[chain.chain_id].Find(x=> x.item_code == item.item_code)== null)
                 {
-                    if (!listOfMissingItems.Contains(item))
+                    if (!listOfMissingItems.Contains(item.item_name))
                     {
-                        listOfMissingItems.Add(item);
+                        listOfMissingItems.Add(item.item_name);
                     }
                 }
             }

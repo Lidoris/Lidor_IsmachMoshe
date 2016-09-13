@@ -24,14 +24,17 @@ namespace PriceCompareModel
         {
             return _context.items.ToList();
         }
+
         public List<chain> GetChains()
         {
             return _context.chains.ToList();
         }
+
         public List<price> GetPrices()
         {
             return _context.prices.ToList();
         }
+
         public List<store> GetStores()
         {
             return _context.stores.ToList();
@@ -90,7 +93,6 @@ namespace PriceCompareModel
                         decompressionStream.CopyTo(decompressedFileStream);
                     }
                 }
-
             }
         }
 
@@ -101,23 +103,20 @@ namespace PriceCompareModel
             List<item> listOfItems = new List<item>();
             List<price> listOfPrices = new List<price>();
             DirectoryInfo allPrices = new DirectoryInfo(@"C:\finalProject_PriceCompare\AllPrices\bin\prices");
-            allPrices.GetDirectories();
+            
             foreach (var subDirectory in allPrices.GetDirectories())
             {
                 DecompressAllFiles();
-                if (subDirectory.Name == "logs")
-                {
-                    continue;
-                }
-
+                
                 string StoreFilePath = subDirectory.GetFiles().Where(t => t.Name.StartsWith("Stores")).Single().FullName;
                 XDocument storesDoc = XDocument.Load(StoreFilePath);
                 curChain = ChainToDB(storesDoc, _context);
                 chain existingChain = _context.chains.FirstOrDefault(c => c.chain_id == curChain.chain_id);
-                _context.SaveChanges();
+                
                 if (existingChain == null)
                 {
                     _context.chains.Add(curChain);
+                    _context.SaveChanges();
                 }
 
                 listOfStores = StoresToDB(storesDoc, _context, curChain);
@@ -162,9 +161,9 @@ namespace PriceCompareModel
         {
             XElement root = storesDoc.Root;
             chain chain = new chain();
-
             long chain_id;
             long.TryParse(root.Element("ChainId").Value, out chain_id);
+
             chain.chain_id = chain_id;
             chain.chain_name = root.Element("ChainName").Value;
 
@@ -180,6 +179,7 @@ namespace PriceCompareModel
             foreach (var Store in StoresElm.Elements("Store"))
             {
                 store store = new store();
+
                 int.TryParse(Store.Element("StoreId").Value, out store_id);
                 store.store_id = store_id;
                 store.chain_id = chain.chain_id;
@@ -187,9 +187,7 @@ namespace PriceCompareModel
                 store.store_name = Store.Element("StoreName").Value;
                 store.address = Store.Element("Address").Value;
                 store.city = Store.Element("City").Value;
-
                 var existingStore = context.stores.FirstOrDefault(s => s.store_id == store.store_id && s.chain_id == store.chain_id);
-
                 if (existingStore == null)
                 {
                     listOfStores.Add(store);
@@ -267,11 +265,11 @@ namespace PriceCompareModel
                     price.store_key = existingStore.store_key;
                     float.TryParse(itemElement.Element("ItemPrice").Value, out priceOfItem);
                     price.price1 = priceOfItem;
-                    //var existingPrice = context.prices.FirstOrDefault(p => p.item_code == price.item_code &&  p.store_key == price.store_key);
-                    //if (existingPrice == null)
-                    //{
+                    var existingPrice = context.prices.FirstOrDefault(p => p.item_code == price.item_code &&  p.store_key == price.store_key);
+                    if (existingPrice == null)
+                    {
                         listOfPrices.Add(price);
-                    //}
+                    }
                 }
             }
 

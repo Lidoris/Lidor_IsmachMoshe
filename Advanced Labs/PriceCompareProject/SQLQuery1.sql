@@ -1,1 +1,0 @@
-﻿select count(item_code) as c, item_code from dbo.prices group by item_code order by c
