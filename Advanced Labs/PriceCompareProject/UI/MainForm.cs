@@ -19,13 +19,8 @@ namespace UI
         {
             InitializeComponent();
 
-            //manager.PopulateDB();
-            //List<item> listToDelete = _model.ItemsNotInAllChains();
-            //foreach (var item in listToDelete)
-            //{
-            //    _model._manager.context.items.Remove(item);
-            //    _model._manager.context.SaveChanges();
-            //}
+            //_model._dbManager.PopulateDB();
+           
             itemsComboBox.DataSource = _model._dbManager.GetItems();
             shoppingCartListBox.DataSource = _model._shoppingCart.selectedItems;
             
@@ -56,16 +51,17 @@ namespace UI
                 chain bestRankChain = _model.FindBestRank();
                 if (bestRankChain != null)
                 {
+                    bestChainLabel.ForeColor = Color.CadetBlue;
                     bestChainLabel.Text = "הרשת המשתלמת ביותר לסל זה היא " + bestRankChain.chain_name;
+                    bestChainLabel.Left = this.Width / 2 - bestChainLabel.Width / 2;
                 }
                 else
                 {
-                    bestChainLabel.Text = "לא נמצאה רשת מומלצת לסל קניות זה";
                     bestChainLabel.ForeColor = Color.Red;
-
+                    bestChainLabel.Text = "לא נמצאה רשת מומלצת לסל קניות זה";
                 }
 
-                this.Height = 650;
+                this.Height = 750;
                 CreateResultTabControl();
             }
         }
@@ -120,8 +116,6 @@ namespace UI
                 detailsItemListBox.Visible = false;
                 detailsItemGroupBox.Visible = false;
             }
-
-
         }
 
         private void CreateResultTabControl()
@@ -157,7 +151,6 @@ namespace UI
                     missingItemsLabel.Top = dataGridView.Height;
                     missingItemsLabel.AutoSize = true;
                     missingItemsLabel.Left = dataGridView.Right - missingItemsLabel.Width;
-
                 }
 
                 totalCartPriceLabel.Text = "מחיר סופי : " + _model.TotalCartPrice(chain) + " שח ";
@@ -165,12 +158,7 @@ namespace UI
                 totalCartPriceLabel.Top = 180;
                 totalCartPriceLabel.AutoSize = true;
                 totalCartPriceLabel.Font = new Font("Arial", 14F);
-
-
-
             }
-            
-
         }
 
         private void dataGridView_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)

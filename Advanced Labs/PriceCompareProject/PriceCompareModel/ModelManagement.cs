@@ -35,7 +35,7 @@ namespace PriceCompareModel
             return _minPricesForAllChains[chain.chain_id];
         }
         
-        public void FindTheMinPricesForAllChains() //1
+        public void FindTheMinPricesForAllChains()
         {
             List<price> allPricesForCurChain;
 
@@ -60,10 +60,6 @@ namespace PriceCompareModel
                     {
                         _minPricesForAllChains[chain.chain_id].Add(allPricesForCurChain.Minimum()); // adding the minimun price to the final list
                     }
-                    //else
-                    //{
-
-                    //}
                 }
             }
 
@@ -82,7 +78,7 @@ namespace PriceCompareModel
             }
         }
 
-        public void UpdateChainRank(item item) // עידכון דרוג 2
+        public void UpdateChainRank(item item) 
         {
             List<price> pricesForItem = new List<price>();
 
@@ -131,10 +127,13 @@ namespace PriceCompareModel
             {
                 if (_minPricesForAllChains[chain.chain_id].Find(x=> x.item_code == item.item_code)== null)
                 {
-                    listOfMissingItems.Add(item);
+                    if (!listOfMissingItems.Contains(item))
+                    {
+                        listOfMissingItems.Add(item);
+                    }
                 }
             }
-
+            
             return listOfMissingItems;
         }
 

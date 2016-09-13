@@ -13,7 +13,7 @@ namespace PriceCompareModel
 {
     public class DBManager
     {
-        public PriceCompareDBEntitie _context;
+        private PriceCompareDBEntitie _context;
 
         public DBManager()
         {
@@ -24,7 +24,6 @@ namespace PriceCompareModel
         {
             return _context.items.ToList();
         }
-
         public List<chain> GetChains()
         {
             return _context.chains.ToList();
@@ -106,7 +105,6 @@ namespace PriceCompareModel
             foreach (var subDirectory in allPrices.GetDirectories())
             {
                 DecompressAllFiles();
-
                 if (subDirectory.Name == "logs")
                 {
                     continue;
@@ -114,11 +112,9 @@ namespace PriceCompareModel
 
                 string StoreFilePath = subDirectory.GetFiles().Where(t => t.Name.StartsWith("Stores")).Single().FullName;
                 XDocument storesDoc = XDocument.Load(StoreFilePath);
-
                 curChain = ChainToDB(storesDoc, _context);
                 chain existingChain = _context.chains.FirstOrDefault(c => c.chain_id == curChain.chain_id);
                 _context.SaveChanges();
-
                 if (existingChain == null)
                 {
                     _context.chains.Add(curChain);
@@ -143,7 +139,6 @@ namespace PriceCompareModel
                             _context.items.Add(item);
                             _context.SaveChanges();
                         }
-
                     }
                 }
 
@@ -159,7 +154,6 @@ namespace PriceCompareModel
                             _context.SaveChanges();
                         }
                     }
-
                 }
             }
         }
